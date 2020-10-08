@@ -1,12 +1,11 @@
 #include"ElementaryParticle.h"
 
-    ElementaryParticle::ElementaryParticle (double x, string y, bool z)
+    ElementaryParticle::ElementaryParticle (double x, string y, bool z) //pozivanje konstruktora klase :: određuje kojoj klasi konstruktor pripada
     {
         masa_class=x;
         ime_class=y;
         boson_class=z;
     }
-
 
     void ElementaryParticle::print()//poivanje funkcije za print
     {
