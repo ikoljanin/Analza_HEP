@@ -8,3 +8,4 @@ OBJ = analyzer.o ElementaryParticle.o
 
 analyzer: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
+	rm *.o
