@@ -27,8 +27,7 @@ class ElementaryParticle
     ElementaryParticle();//po zadatku ne prima ništa
 
     //bosonDecay funkcija
-    void bosonDecay(ElementaryParticle *c1,ElementaryParticle *c2);
-    
+    void bosonDecay(int c,ElementaryParticle *c1,ElementaryParticle *c2);
  
 };
 
