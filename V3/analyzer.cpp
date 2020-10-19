@@ -18,6 +18,8 @@ int main()
     ElementaryParticle *decay_particle2;
     decay_particle1 = new ElementaryParticle(); 
     decay_particle2 = new ElementaryParticle();
+    char filename[] = "rezultati.txt";
+	remove(filename); // prije unosenja podataka iz datoteke izbrisem prethodne podatke
     for(int i=1;i<=10000;i++) 
     {
         pokH=new ElementaryParticle(125.18,"Higgs",true);

@@ -10,7 +10,6 @@ class ElementaryParticle
         bool boson_class;
         //elementi četverovektora 
         double px_class,py_class,pz_class,pt_class,E_class;
-        double Edecay_class;
 
     //definicija konstruktora klase 
     ElementaryParticle (double x, string y, bool z); //konstruktor klase se zove isto kao i sama klasa; poziva se u cpp dijel; //; zbog pozivanja 
