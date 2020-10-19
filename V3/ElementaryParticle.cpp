@@ -67,8 +67,8 @@
             {
                 c1->masa_class=80.38;
                 c2->masa_class=80.38;
-                c1->ime_class="W bozon";
-                c2->ime_class="W anti bozon";
+                c1->ime_class="W ";
+                c2->ime_class="anti W";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
@@ -84,8 +84,8 @@
             {
                 c1->masa_class=1.776;
                 c2->masa_class=1.776;
-                c1->ime_class="T lepto";
-                c2->ime_class="T anti lepto";
+                c1->ime_class="T ";
+                c2->ime_class="anti T";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
@@ -102,8 +102,8 @@
             {  
                 c1->masa_class=91.19;
                 c2->masa_class=91.19;
-                c1->ime_class="Z bozon";
-                c2->ime_class="Z anti bozon";
+                c1->ime_class="Z ";
+                c2->ime_class="anti Z";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
@@ -119,8 +119,8 @@
             {
                 c1->masa_class=4.18;
                 c2->masa_class=4.18;
-                c1->ime_class="b kvark";
-                c2->ime_class="b anti kvark";
+                c1->ime_class="b";
+                c2->ime_class="anti b";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
@@ -133,11 +133,11 @@
                 c2->vrijednost();   
             }
             //cout<<c<<"  "<< ime_class<<"  "<< px_class<<" "<<py_class<<" "<<pz_class<<" "<<E_class<<endl; 
-            cout<<c<<"\t"<< c1->ime_class<<"\t\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;  
-            cout<<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->E_class<<endl;
+            //cout<<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;  
+            //cout<<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->E_class<<endl;
             ofstream file;
             file.open ("rezultati.txt",ios_base::app); //svaki put dodajem podatke u analysis.txt pa stavim app (append) jer inace izbrise podatke za prethodni Higgsov bozon
-            file <<c<<"\t"<< c1->ime_class<<"\t\t\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;
+            file <<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;
             file <<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->E_class<<endl;
             file.close(); 
 
