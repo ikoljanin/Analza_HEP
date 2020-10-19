@@ -19,9 +19,9 @@ class ElementaryParticle
     void print() ;//funkcija za ispis poziva se u cpp dijelu
 
     //funkcija za unos podataka i računanje energije Higgsa
-    double Higgs_fourvector();
+    double Higgs_fourvector(double px,double py,double pz);
 
-    //funkcija za unos i računanje energije čestica na koje se raspadne ulazna čestica     
+    //funkcija za računanje energije čestica na koje se raspadne ulazna čestica     
     double vrijednost();
 
     //funkcija za transverzalnu količinu gibanja

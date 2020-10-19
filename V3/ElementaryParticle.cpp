@@ -16,11 +16,13 @@
 
     }
     
-    double ElementaryParticle::Higgs_fourvector() //f-ja ne prima ništa jer sve šta koristi je globalno definirano
+    //funkcija za unos podataka i računanje energije Higgsa
+    // pokH->...ovakvo pozivanje funkcije pamti poziciju px_class itd. i zna da je to za Higgsa
+    double ElementaryParticle::Higgs_fourvector(double px, double py, double pz) 
     {
-        px_class=-100+(100-(-100))*(rand()%1000)/1000;
-        py_class=-100+(100-(-100))*(rand()%1000)/1000;
-        pz_class=-100+(100-(-100))*(rand()%1000)/1000;
+        px_class=px;
+        py_class=py;
+        pz_class=pz;
         E_class=sqrt(px_class*px_class+py_class*py_class+pz_class*pz_class+masa_class*masa_class);
     }
 
