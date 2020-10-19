@@ -3,31 +3,31 @@
 #include <math.h>
 
      //##pozivanje konstruktora klase :: određuje kojoj klasi konstruktor pripada
-    ElementaryParticle::ElementaryParticle (double x, string y, bool z,double px, double py, double pz)
+    ElementaryParticle::ElementaryParticle (double x, string y, bool z)
     {
         masa_class=x;
         ime_class=y;
         boson_class=z;
-        px_class=px;
-        py_class=py;
-        pz_class=pz;
     }
 
     void ElementaryParticle::print()//poivanje funkcije za ispis
     {
          cout << "Masa cestice "<<ime_class<<" je = " << masa_class << " ova cestica je bozon = "<< boson_class<< endl;
-        
+
+    }
+    
+    double ElementaryParticle::Higgs_fourvector() //f-ja ne prima ništa jer sve šta koristi je globalno definirano
+    {
+        px_class=-100+(100-(-100))*(rand()%1000)/1000;
+        py_class=-100+(100-(-100))*(rand()%1000)/1000;
+        pz_class=-100+(100-(-100))*(rand()%1000)/1000;
+        E_class=sqrt(px_class*px_class+py_class*py_class+pz_class*pz_class+masa_class*masa_class);
     }
 
-    //##funkcija za unos i računanje energije    
+    //##funkcija za unos i računanje energije čestica na koje se raspadne ulazna čestica  
     double ElementaryParticle::vrijednost() //f-ja ne prima ništa jer sve šta koristi je globalno definirano
     {
-        /*cout<<"Unesite sve tri komponente kolicine gibanja za" <<   ime_class <<endl;
-        cin>>px_class;
-        cin>>py_class;
-        cin>>pz_class;*/
         E_class=sqrt(px_class*px_class+py_class*py_class+pz_class*pz_class+masa_class*masa_class);
-        //cout<<ime_class <<   E_class <<endl;
         return E_class;
     }
 
@@ -53,7 +53,7 @@
         {
             cout<<"Rapad nije moguć"<<endl;
         }
-        
+
         else if(boson_class==true)//dogodi se raspad
         {
             int r = rand()%1000;
@@ -74,7 +74,7 @@
                 c2->pz_class=pz_class-c1->pz_class;
                 c2->vrijednost();
             }
-            if(214<r && r<278)//raspad na 2 tau lepton
+            else if(214<r && r<278)//raspad na 2 tau lepton
             {
                 c1->masa_class=1.776;
                 c2->masa_class=1.776;
@@ -89,9 +89,9 @@
                 c2->py_class=py_class-c1->py_class;
                 c2->pz_class=pz_class-c1->pz_class;
                 c2->vrijednost();
-            
+
             }
-            if(278<r && r<304)//raspad na 2 Z bozon
+            else if(278<r && r<304)//raspad na 2 Z bozon
             {  
                 c1->masa_class=91.19;
                 c2->masa_class=91.19;
@@ -107,7 +107,7 @@
                 c2->pz_class=pz_class-c1->pz_class;
                 c2->vrijednost();
             }
-            if(r>304)//raspad na 2 b kvarkove
+            else if(r>304)//raspad na 2 b kvarkove
             {
                 c1->masa_class=4.18;
                 c2->masa_class=4.18;
@@ -123,12 +123,14 @@
                 c2->pz_class=pz_class-c1->pz_class;
                 c2->vrijednost();   
             }
+            //cout<<c<<"  "<< ime_class<<"  "<< px_class<<" "<<py_class<<" "<<pz_class<<" "<<E_class<<endl; 
             cout<<c<<"  "<< c1->ime_class<<"  "<<  c1->px_class<<" "<<c1->py_class<<" "<<c1->pz_class<<" "<<c1->E_class<<endl;  
             cout<<c<<"  "<< c1->ime_class<<"  "<<  c2->px_class<<" "<<c2->py_class<<" "<<c2->pz_class<<" "<<c2->E_class<<endl; 
-    
+
         }
-  
+
     }
-    
+
+
     
 
