@@ -63,6 +63,7 @@
                 c1->masa_class=80.38;
                 c2->masa_class=80.38;
                 c1->ime_class="W bozon";
+                c2->ime_class="W anti bozon";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
@@ -78,7 +79,8 @@
             {
                 c1->masa_class=1.776;
                 c2->masa_class=1.776;
-                c1->ime_class="Tau lepton";
+                c1->ime_class="T lepto";
+                c2->ime_class="T anti lepto";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
@@ -96,6 +98,7 @@
                 c1->masa_class=91.19;
                 c2->masa_class=91.19;
                 c1->ime_class="Z bozon";
+                c2->ime_class="Z anti bozon";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
@@ -112,6 +115,7 @@
                 c1->masa_class=4.18;
                 c2->masa_class=4.18;
                 c1->ime_class="b kvark";
+                c2->ime_class="b anti kvark";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
@@ -124,8 +128,8 @@
                 c2->vrijednost();   
             }
             //cout<<c<<"  "<< ime_class<<"  "<< px_class<<" "<<py_class<<" "<<pz_class<<" "<<E_class<<endl; 
-            cout<<c<<"  "<< c1->ime_class<<"  "<<  c1->px_class<<" "<<c1->py_class<<" "<<c1->pz_class<<" "<<c1->E_class<<endl;  
-            cout<<c<<"  "<< c1->ime_class<<"  "<<  c2->px_class<<" "<<c2->py_class<<" "<<c2->pz_class<<" "<<c2->E_class<<endl; 
+            cout<<c<<"\t"<< c1->ime_class<<"\t\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;  
+            cout<<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->E_class<<endl; 
 
         }
 
