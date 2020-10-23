@@ -1,6 +1,10 @@
 #include <iostream>
-using namespace std;
-
+#include <string>
+#include<sstream>
+#include "TROOT.h"
+#include "TChain.h"
+#include "TFile.h"
+#include "TApplication.h"
 // create a class
 class Analyzer
 {
@@ -18,4 +22,3 @@ class Analyzer
         
 
 };
-
