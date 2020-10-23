@@ -1,10 +1,3 @@
-#include <iostream>
-#include <string>
-#include<fstream>
-#include "TROOT.h"
-#include "TChain.h"
-#include "TFile.h"
-#include "TApplication.h"
 #include "Analyzer.h"
 using namespace std;
 
@@ -14,16 +7,17 @@ using namespace std;
        
     }
 
-//funkcija za učitavanje 
+//funkcija za učitavanje i konvertiranje u root file
 void Analyzer::read_function()
 {
     // Varijable u koje se učitavaju podatci iz ulaznog dokumenta
     string ime_class;
     int br_class;
     double px_class,py_class,pz_class,E_class,pt_class;
-
     // File za isčitavanja
     ifstream MyReadFile("rezultati.txt");
+	//konvertiranje u root file
+	TFile *hfile = hfile = TFile::Open("rezultati.root","RECREATE");
 	
     string line;
     
@@ -39,32 +33,8 @@ void Analyzer::read_function()
     }
 }
 
-/*//funkcija za konvertiranje u root file (bez kreiranja stabla)
-void Analyzer::Convert_to_root()
-{
-	string ime_class;
-    int br_class;
-    double px_class,py_class,pz_class,E_class,pt_class;
-	
-	ifstream MyReadFile("rezultati.txt");
-	ofstream root_file;
-    root_file.open ("rezultati.root",ios_base::app);
-	string line;
 
-	if(MyReadFile.is_open())
-    {
-        while (getline(MyReadFile,line))
-        {
-            stringstream linestream(line);
-            //učitavanje varijabli "jedna po jedna"
-            linestream>>br_class>>ime_class>>px_class>>py_class>>pz_class>>pt_class>>E_class;
-			root_file<<br_class<<"\t"<<ime_class<<"\t"<<px_class<<"\t"<<py_class<<"\t"<<pz_class<<"\t"<<E_class<<endl;      
-        }
-    }
-	MyReadFile.close();
-	root_file.close();
-}
-
+/*
 //funkcija za konvertiranje u root file
 void Analyzer::Convert_to_root()
 {
