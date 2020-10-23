@@ -28,7 +28,7 @@ int main()
         p_y=-100+(100-(-100))*(rand()%1000)/1000;
         p_z=-100+(100-(-100))*(rand()%1000)/1000;
         //elementi četverovektora Higgsa definirani su preko funkcije
-        pokH->Higgs_fourvector(p_x,p_y,p_z); 
+        pokH->fourvector(p_x,p_y,p_z); 
         //funkcija šalje objekte klase (pokazivač na objekte); funkciju poziva poznata čestica; ulazni su "prazne čestice"
         pokH->bosonDecay(i,decay_particle1,decay_particle2);
         delete pokH;   
