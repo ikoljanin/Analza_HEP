@@ -40,7 +40,7 @@
     double ElementaryParticle::trans()
     {
         pt_class=sqrt(px_class*px_class+py_class*py_class);
-        cout<<ime_class << pt_class <<endl;
+        //cout<<ime_class << pt_class <<endl;
     }
 
     //##definicija override konstruktora (korisno za pozivanje čestica na koje se raspada ulazna čestica)
@@ -67,34 +67,38 @@
             {
                 c1->masa_class=80.38;
                 c2->masa_class=80.38;
-                c1->ime_class="W ";
-                c2->ime_class="anti W";
+                c1->ime_class="W";
+                c2->ime_class="W";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
                 c1->pz_class=(rand()%100)*(1.0)/100*pz_class;
+				c1->trans();
                 c1->vrijednost();
                 //četverovektor druge čestice raspada
                 c2->px_class=px_class-c1->px_class;
                 c2->py_class=py_class-c1->py_class;
                 c2->pz_class=pz_class-c1->pz_class;
+				c2->trans();
                 c2->vrijednost();
             }
             else if(214<r && r<278)//raspad na 2 tau lepton
             {
                 c1->masa_class=1.776;
                 c2->masa_class=1.776;
-                c1->ime_class="T ";
-                c2->ime_class="anti T";
+                c1->ime_class="T";
+                c2->ime_class="T";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
                 c1->pz_class=(rand()%100)*(1.0)/100*pz_class;
+				c1->trans();
                 c1->vrijednost();
                 //četverovektor druge čestice raspada
                 c2->px_class=px_class-c1->px_class;
                 c2->py_class=py_class-c1->py_class;
                 c2->pz_class=pz_class-c1->pz_class;
+				c2->trans();
                 c2->vrijednost();
 
             }
@@ -102,17 +106,19 @@
             {  
                 c1->masa_class=91.19;
                 c2->masa_class=91.19;
-                c1->ime_class="Z ";
-                c2->ime_class="anti Z";
+                c1->ime_class="Z";
+                c2->ime_class="Z";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
                 c1->pz_class=(rand()%100)*(1.0)/100*pz_class;
+				c1->trans();
                 c1->vrijednost();
                 //četverovektor druge čestice raspada
                 c2->px_class=px_class-c1->px_class;
                 c2->py_class=py_class-c1->py_class;
                 c2->pz_class=pz_class-c1->pz_class;
+				c2->trans();
                 c2->vrijednost();
             }
             else if(r>304)//raspad na 2 b kvarkove
@@ -120,25 +126,27 @@
                 c1->masa_class=4.18;
                 c2->masa_class=4.18;
                 c1->ime_class="b";
-                c2->ime_class="anti b";
+                c2->ime_class="b";
                 //četverovektor prve čestice raspada
                 c1->px_class=(rand()%100)*(1.0)/100*px_class;
                 c1->py_class=(rand()%100)*(1.0)/100*py_class;
                 c1->pz_class=(rand()%100)*(1.0)/100*pz_class;
+				c1->trans();
                 c1->vrijednost();
                 //četverovektor druge čestice raspada
                 c2->px_class=px_class-c1->px_class;
                 c2->py_class=py_class-c1->py_class;
                 c2->pz_class=pz_class-c1->pz_class;
-                c2->vrijednost();   
+				c2->trans();
+                c2->vrijednost(); 
             }
             //cout<<c<<"  "<< ime_class<<"  "<< px_class<<" "<<py_class<<" "<<pz_class<<" "<<E_class<<endl; 
             //cout<<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;  
             //cout<<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->E_class<<endl;
             ofstream file;
             file.open ("rezultati.txt",ios_base::app); //svaki put dodajem podatke u analysis.txt pa stavim app (append) jer inace izbrise podatke za prethodni Higgsov bozon
-            file <<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;
-            file <<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->E_class<<endl;
+            file <<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->pt_class<<"\t"<<c1->E_class<<endl;
+            file <<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->pt_class<<"\t"<<c1->E_class<<endl;
             file.close(); 
 
         }
