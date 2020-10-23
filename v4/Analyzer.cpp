@@ -1,11 +1,11 @@
 #include "Analyzer.h"
-using namespace std;
+using namespace std; 
 
- //konstruktor klase
- Analyzer::Analyzer ()
-    {
+//konstruktor klase
+Analyzer::Analyzer ()
+{
        
-    }
+}
 
 //funkcija za učitavanje i konvertiranje u root file
 void Analyzer::read_function()
@@ -74,7 +74,7 @@ void Analyzer::Convert_to_root()
 	tree->Branch("E2_class", &E2_class, "E2_class/LF");
   
 	char line[80];
-   while (fgets(line,80,input_file))
+	while (fgets(line,80,input_file))
 	{
       sscanf(&line[0],"%d %c %c %lf %lf %lf %lf  %lf %lf %lf %lf %lf %lf",
       &br_class,&ime1_class,&ime2_class,&px1_class,&py1_class,&pz1_class,&px2_class,&py2_class,&pz2_class,&pt1_class,&pt2_class,&E1_class,&E2_class);
