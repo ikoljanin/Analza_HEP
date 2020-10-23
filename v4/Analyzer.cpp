@@ -16,11 +16,9 @@ void Analyzer::read_function()
     double px_class,py_class,pz_class,E_class,pt_class;
     // File za isčitavanja
     ifstream MyReadFile("rezultati.txt");
-	//konvertiranje u root file
-	TFile *hfile = hfile = TFile::Open("rezultati.root","RECREATE");
-	
+
     string line;
-    
+    //učitavanje .txt filea
     if(MyReadFile.is_open())
     {
         while (getline(MyReadFile,line))
@@ -33,13 +31,15 @@ void Analyzer::read_function()
     }
 }
 
-
-/*
 //funkcija za konvertiranje u root file
 void Analyzer::Convert_to_root()
 {
-	FILE *fp = fopen("rezultati.txt","r");
-	TFile *hfile = hfile = TFile::Open("rezultati.root","RECREATE");
+	//file s ulaznim podatcima
+	FILE *input_file = fopen("rezultati.txt","r");
+	//konvertiranje u root file
+	TFile *root_file = root_file = TFile::Open("rezultati.root","RECREATE");
+	//pokazivač na objekt klase TTree
+	TTree *tree = new TTree("T","Vjezbe 4");
 
    //kreiranje varijabli za brancheve
 	Int_t           br_class;
@@ -68,22 +68,21 @@ void Analyzer::Convert_to_root()
 	tree->Branch("pt1_class",&pt1_class,"pt1_class/LF");
 	tree->Branch("E1_class" ,&E1_class, "E1_class/LF");	
 	tree->Branch("px2_class",&px2_class,"px2_class/LF");
-	tree->Branch("py2_class",&py2_class,"py2_cLass/LF");
+	tree->Branch("py2_class",&py2_class,"py2_class/LF");
 	tree->Branch("pz2_class",&pz2_class,"pz2_class/LF");
 	tree->Branch("pt2_class",&pt2_class,"pt2_class/LF");
-	Tree->Branch("E2_class", &E2_class, "E2_class/LF");
+	tree->Branch("E2_class", &E2_class, "E2_class/LF");
   
 	char line[80];
-	while (fgets(line,80,fp)) 
+   while (fgets(line,80,input_file))
 	{
       sscanf(&line[0],"%d %c %c %lf %lf %lf %lf  %lf %lf %lf %lf %lf %lf",
-      &br_class,&ime1_class,&ime2_class,&px1_class,&py1_class,&pz1_class,&px2_class,&py2_cLass,&pz2_class,&pt1_class,&pt2_class,&E1_class,&E2_class);
+      &br_class,&ime1_class,&ime2_class,&px1_class,&py1_class,&pz1_class,&px2_class,&py2_class,&pz2_class,&pt1_class,&pt2_class,&E1_class,&E2_class);
       tree->Fill();
 	}
 	tree->Print();
 	tree->Write();
 
-	fclose(fp);
-	delete hfile;
-
-}*/
+	fclose(input_file);
+	delete root_file;
+}

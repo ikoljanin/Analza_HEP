@@ -21,5 +21,4 @@ class Analyzer
     //funkcija za konvertiranje u root file
     void Convert_to_root();
         
-
 };
