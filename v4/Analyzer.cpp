@@ -35,13 +35,13 @@ void Analyzer::read_function()
 void Analyzer::Convert_to_root()
 {
 	//file s ulaznim podatcima
-	FILE *input_file = fopen("rezultati.txt","r");
-	//konvertiranje u root file
+	ifstream input_file("rezultati.txt");
+	//konvertiranje filea s ulaznim podatcima u root file
 	TFile *root_file = root_file = TFile::Open("rezultati.root","RECREATE");
-	//pokazivač na objekt klase TTree
+	//pokazivač na objekt klase TTree (pokazivač na "stablo")
 	TTree *tree = new TTree("T","Vjezbe 4");
 
-   //kreiranje varijabli za brancheve
+   //kreiranje varijabli za brancheve (grane stabla)
 	Int_t           br_class;
 	
 	Char_t          ime1_class;
@@ -73,16 +73,22 @@ void Analyzer::Convert_to_root()
 	tree->Branch("pt2_class",&pt2_class,"pt2_class/D");
 	tree->Branch("E2_class", &E2_class, "E2_class/D");
   
-	char line[80];
-	while (fgets(line,80,input_file))
-	{
-      sscanf(&line[0],"%d %s %s %lf %lf %lf %lf  %lf %lf %lf %lf %lf %lf",
-      &br_class,&ime1_class,&ime2_class,&px1_class,&py1_class,&pz1_class,&px2_class,&py2_class,&pz2_class,&pt1_class,&pt2_class,&E1_class,&E2_class);
-      tree->Fill();
-	}
+	string line;
+	if(input_file.is_open())
+    {
+        while (getline(input_file,line))
+        {
+            stringstream linestream(line);
+            //učitavanje varijabli "jedna po jedna"
+            linestream>>br_class>>ime1_class>>px1_class>>py1_class>>pz1_class>>pt1_class>>E1_class>>ime2_class>>px2_class>>py2_class>>pz2_class>>pt2_class>>E2_class;
+			tree->Fill();
+			//cout<<br_class<<endl;
+			//cout<<br_class<<"\t"<<ime_class<<"\t"<<px_class<<"\t"<<py_class<<"\t"<<pz_class<<"\t"<<E_class<<endl;          
+        }
+    }
 	tree->Print();
 	tree->Write();
 
-	fclose(input_file);
+	//input_file.close;
 	delete root_file;
 }
