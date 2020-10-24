@@ -90,13 +90,12 @@
             c1->fourvector(p1x,p1y,p1z);
 			//četverovektor druge čestice raspada
 			c2->fourvector(px_class-c1->px_class,py_class-c1->py_class,pz_class-c1->pz_class);
-            cout<<c<<"  "<< ime_class<<"  "<< px_class<<" "<<py_class<<" "<<pz_class<<" "<<E_class<<endl; 
-            cout<<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;  
-            cout<<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->E_class<<endl;
+            //cout<<c<<"  "<< ime_class<<"  "<< px_class<<" "<<py_class<<" "<<pz_class<<" "<<E_class<<endl; 
+            //cout<<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->E_class<<endl;  
+            //cout<<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->E_class<<endl;
             ofstream file;
             file.open ("rezultati.txt",ios_base::app); //svaki put dodajem podatke u analysis.txt pa stavim app (append) jer inace izbrise podatke za prethodni Higgsov bozon
-            file <<c<<"\t"<< c1->ime_class<<"\t"<<  c1->px_class<<"\t"<<c1->py_class<<"\t"<<c1->pz_class<<"\t"<<c1->pt_class<<"\t"<<c1->E_class<<endl;
-            file <<c<<"\t"<< c2->ime_class<<"\t"<<  c2->px_class<<"\t"<<c2->py_class<<"\t"<<c2->pz_class<<"\t"<<c2->pt_class<<"\t"<<c2->E_class<<endl;
+            file <<c<<" "<< c1->ime_class<<" "<<  c1->px_class<<" "<<c1->py_class<<" "<<c1->pz_class<<" "<<c1->pt_class<<" "<<c1->E_class<<" "<< c2->ime_class<<" "<<  c2->px_class<<" "<<c2->py_class<<" "<<c2->pz_class<<" "<<c2->pt_class<<" "<<c2->E_class<<endl;
             file.close(); 
 
         }
