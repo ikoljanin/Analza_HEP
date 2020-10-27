@@ -6,7 +6,7 @@ DEPS = Analyzer.h
 %.o: %.cpp $(DEPS)
 	$(CC) $(LDFLAGS) -c -o $@ $< $(CFLAGS)
 
-analyzer: analyze.o Analyzer.o
+analyze: analyze.o Analyzer.o
 	$(CC) $(LDFLAGS) -o analyze analyze.o Analyzer.o
 
 clean:

@@ -37,9 +37,9 @@ void Analyzer::Convert_to_root()
 	//file s ulaznim podatcima
 	ifstream input_file("rezultati.txt");
 	//konvertiranje filea s ulaznim podatcima u root file
-	TFile *root_file = root_file = TFile::Open("rezultati.root","RECREATE");
+	TFile *root_file = root_file = TFile::Open("Analysis.root","RECREATE");
 	//pokazivač na objekt klase TTree (pokazivač na "stablo")
-	TTree *tree = new TTree("T","Vjezbe 4");
+	TTree *tree = new TTree("Tree","Vjezbe 4");
 
    //kreiranje varijabli za brancheve (grane stabla)
 	Int_t           br_class;
@@ -60,7 +60,7 @@ void Analyzer::Convert_to_root()
 
 	//dodavanje "brancheva" stablu
 	tree->Branch("br_class",&br_class,"br_class/I");
-	tree->Branch("ime1_class",&ime1_class,"Flag/C");
+	tree->Branch("ime1_class",&ime1_class,"ime1_class/C");
 	tree->Branch("ime2_class",&ime2_class,"ime2_class/C");
 	tree->Branch("px1_class",&px1_class,"px1_class/D");
 	tree->Branch("py1_class",&py1_class,"py1_class/D");
@@ -88,7 +88,6 @@ void Analyzer::Convert_to_root()
     }
 	tree->Print();
 	tree->Write();
-
 	//input_file.close;
 	delete root_file;
 }
