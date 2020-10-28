@@ -48,8 +48,45 @@ void Analyzer::Loop()
 		cout<<*ime1_class;
    }
 }
-//#DODAVANJE FUNKCIJE ZA HISTOGRAM
+//#DODAVANJE FUNKCIJE ZA KREIRANJE HISTOGRAM
 void Analyzer::PlotHistogram()
 {
+	Histo1=new TH1F("Transverzalna_1","pt1",100,0,100);
+	 if (fChain == 0) return;
+
+   Long64_t nentries = fChain->GetEntriesFast();
+
+   Long64_t nbytes = 0, nb = 0;
+   //petlja po svim branchevima 
+   // jentry 0 je svih 13 brancheva za 1. raspad, jentry 2 13 brancheva za 2. raspad etc.
+   for (Long64_t jentry=0; jentry<nentries;jentry++) 
+   {
+      Long64_t ientry = LoadTree(jentry);
+      if (ientry < 0) 
+		  break;
+      nb = fChain->GetEntry(jentry); 
+	  nbytes += nb;
+      // if (Cut(ientry) < 0) continue;
+	  //######MOJA DODAVANJA
+	  //varijable se mogu pozivati originalnim imenima (imena brancheva) jer ih root file automatski roota
+		Histo1->Fill(pt1_class); //u zagrade funkcija prima čime se želi filovat graf
+   }
+   //Objekt klase canvas je "platno" na koje se ucrtava istogram
+	TCanvas *c1 ;
+	c1= new TCanvas("c1","c1",800,1000);
+	//po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
+   Histo1->Draw("ep");//kreiranje histograma seror baroviama
+   c1->SaveAs("Pt1.pdf");//spremanje histograma u pdf format
+   c1->SaveAs("Pt1.png");
+   c1->SaveAs("Pt1.root");
+   //c1-> Divide()...kako želimo podilit platno
+   //c1->cd(nešto) di želimo na platnu doć, u koji dio
+   
+	
 	
 }
+//TLorentzVector je gotova klasa
+//TLorentzVector *p1=new TLorentzVector(.....)
+//p1->set(px,py,pz,E);
+//TLorentzVector *p2=new TLorentzVector(elementi četverovektora)
+//TLorentzVector *Higs=p1+p2 //zbrajanje cilog definiranog četverovektora

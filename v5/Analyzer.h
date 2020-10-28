@@ -10,6 +10,7 @@
 
 #include <TROOT.h>
 #include <TChain.h>
+#include <TH1F.h>
 #include <TFile.h>
 #include <iostream>
 using namespace std;
@@ -52,6 +53,8 @@ public :
    TBranch        *b_pz2_class;   //!
    TBranch        *b_pt2_class;   //!
    TBranch        *b_E2_class;   //!
+   
+   TH1F *Histo1;
 
    Analyzer(TTree *tree=0);
    virtual ~Analyzer();

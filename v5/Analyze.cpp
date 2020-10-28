@@ -5,7 +5,7 @@ int main()
 {
     Analyzer *A;
 	A=new Analyzer();
-	A->Loop();
+	A->PlotHistogram();
     
     return 0;
 }
