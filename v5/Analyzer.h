@@ -54,7 +54,9 @@ public :
    TBranch        *b_pt2_class;   //!
    TBranch        *b_E2_class;   //!
    
+   //Varijable klase TH1F
    TH1F *Histo1;
+   TH1F *Histo2;
 
    Analyzer(TTree *tree=0);
    virtual ~Analyzer();
