@@ -1,5 +1,7 @@
-*.o
-*.root
-*.exe
-*/Analyze
-*.png
+*/*.exe
+*/*.o
+*/analyzer
+*/analyze
+*/*.txt
+*/*.png
+*/*.root
