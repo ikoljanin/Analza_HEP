@@ -5,6 +5,8 @@
 #include <TCanvas.h>
 #include <Riostream.h>
 #include <TColor.h>
+#include <TLorentzVector.h>
+using namespace std;
 
 void Analyzer::Loop()
 {
@@ -52,15 +54,23 @@ void Analyzer::Loop()
 }
 
 /*###########################################
-#											#
-# DODAVANJE FUNKCIJE ZA KREIRANJE HISTOGRAM #
-#											#
+# DODAVANJE FUNKCIJE ZA KREIRANJE HISTOGRAMA#
 ###########################################*/
 void Analyzer::PlotHistogram()
 {
 	//deklaracija objekta klase histograma TH1F (DEFINIRAN U .H)
 	Histo1=new TH1F("Transverzalna_1","Transverzalna_kolicina_gibanja",100,0,140);
 	Histo2=new TH1F("Transverzalna_2","Transverzalna_kolicina_gibanja",100,0,140);
+	
+	//čestice raspada Higgsa kao elementi klase TLorentzVecotr
+	TLorentzVector *p1;//prva čestica raspada
+	TLorentzVector *p2;//Druga čestica raspada
+	TLorentzVector *Higgs;
+	
+	p1=new TLorentzVector();
+	p2=new TLorentzVector();
+	Higgs=new TLorentzVector();
+	
 	 if (fChain == 0) 
 	 {
 		 return;
@@ -79,11 +89,24 @@ void Analyzer::PlotHistogram()
       nb = fChain->GetEntry(jentry); 
 	  nbytes += nb;
       // if (Cut(ientry) < 0) continue;
-	  //######MOJA DODAVANJA
+	  /*# KREIRANJE HISTOGRAMA #*/
 	  //varijable se mogu pozivati originalnim imenima (imena brancheva) jer ih root file automatski roota
       Histo1->Fill(pt1_class); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
       Histo2->Fill(pt2_class);//drugi histogram puni se podatcima za drugu česticu raspada
+	  
+	  //za svaki branch učitava se za p1 i p2 potrebno za rekreiranje higgsa
+	  p1->SetPxPyPzE(px1_class,py1_class,pz1_class,E1_class);//funkcija koja postavlja četverovektor na željenu vrijednost
+	  p2->SetPxPyPzE(px2_class,py2_class,pz2_class,E2_class);
+	  *Higgs=*p1+*p2;//?zbrojeni četverovektori
+	  //Higgs->SetPxPyPzE(px1_class+px2_class,py1_class+py2_class,pz1_class+pz2_class,E1_class+E2_class);
+	 //cout<<jentry<<"\t"<<Higgs->Px()<<"\t"<<Higgs->Py()<<"\t"<<Higgs->Pz()<<"\t"<<Higgs->E()<<endl;
+	 //Higgs_Histo->fill(sqrt(Higgs->Px()*Higgs->Px()+Higgs->Py()*Higgs->Py());
+	 cout<<sqrt(Higgs->Px()*Higgs->Px()+Higgs->Py()*Higgs->Py())<<endl;
+
    }
+   /*####################
+   #	HISTOGRAM		#
+   ####################*/
    //Objekt klase canvas je "platno" na koje se ucrtava histogram
 	TCanvas *c1 ;
 	c1= new TCanvas("c1","c1",800,1000);
@@ -92,11 +115,11 @@ void Analyzer::PlotHistogram()
    c1->Update();
    //crtanje drugog histograma na istom "platnu"
    Histo2->Draw("same");
-   //Postavljanje x osi histograma
+   //Postavljanje x i y osi histograma
    Histo1->GetXaxis()->SetTitle("X");
-   //Histo1->GetXaxis()->SetTitle("X");
-   //Postavljanje y osi histograma
    Histo1->GetYaxis()->SetTitle("Y");
+
+  
    //mijenjanje boje histograma
    Histo1->SetLineColor(kBlue);
    Histo1->SetFillColor(kBlue);
@@ -107,8 +130,7 @@ void Analyzer::PlotHistogram()
    c1->SaveAs("Pt1.png");
    c1->SaveAs("Pt1.root");
    
-     auto legend = new TLegend(0.1,0.7,0.48,0.9);
-   //c1-> Divide()...kako želimo podilit platno
+   //c1-> Divide(1,2);//s...kako želimo podilit platno
    //c1->cd(nešto) di želimo na platnu doć, u koji dio
    
 	
@@ -118,4 +140,4 @@ void Analyzer::PlotHistogram()
 //TLorentzVector *p1=new TLorentzVector(.....)
 //p1->set(px,py,pz,E);
 //TLorentzVector *p2=new TLorentzVector(elementi četverovektora)
-//TLorentzVector *Higs=p1+p2 //zbrajanje cilog definiranog četverovektora
+//TLorentzVector *Higs=*p1+*p2 //zbrajanje cilog definiranog četverovektora
