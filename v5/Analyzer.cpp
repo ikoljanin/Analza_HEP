@@ -61,6 +61,7 @@ void Analyzer::PlotHistogram()
 	//deklaracija objekta klase histograma TH1F (DEFINIRAN U .H)
 	Histo1=new TH1F("Transverzalna_1","Transverzalna_kolicina_gibanja",100,0,140);
 	Histo2=new TH1F("Transverzalna_2","Transverzalna_kolicina_gibanja",100,0,140);
+	Higgs_Histo=new TH1F("Transverzalna_2","Transverzalna_kolicina_gibanja",100,0,140);
 	
 	//čestice raspada Higgsa kao elementi klase TLorentzVecotr
 	TLorentzVector *p1;//prva čestica raspada
@@ -97,12 +98,10 @@ void Analyzer::PlotHistogram()
 	  //za svaki branch učitava se za p1 i p2 potrebno za rekreiranje higgsa
 	  p1->SetPxPyPzE(px1_class,py1_class,pz1_class,E1_class);//funkcija koja postavlja četverovektor na željenu vrijednost
 	  p2->SetPxPyPzE(px2_class,py2_class,pz2_class,E2_class);
-	  *Higgs=*p1+*p2;//?zbrojeni četverovektori
-	  //Higgs->SetPxPyPzE(px1_class+px2_class,py1_class+py2_class,pz1_class+pz2_class,E1_class+E2_class);
-	 //cout<<jentry<<"\t"<<Higgs->Px()<<"\t"<<Higgs->Py()<<"\t"<<Higgs->Pz()<<"\t"<<Higgs->E()<<endl;
-	 //Higgs_Histo->fill(sqrt(Higgs->Px()*Higgs->Px()+Higgs->Py()*Higgs->Py());
-	 cout<<sqrt(Higgs->Px()*Higgs->Px()+Higgs->Py()*Higgs->Py())<<endl;
-
+	  //zbrojeni četverovektori
+	  *Higgs=*p1+*p2;
+	 //Histogram transverzalne količine gibanja Higgsa
+	 Higgs_Histo->Fill(sqrt(Higgs->Px()*Higgs->Px()+Higgs->Py()*Higgs->Py()));
    }
    /*####################
    #	HISTOGRAM		#
@@ -132,6 +131,16 @@ void Analyzer::PlotHistogram()
    
    //c1-> Divide(1,2);//s...kako želimo podilit platno
    //c1->cd(nešto) di želimo na platnu doć, u koji dio
+   
+   /*##############
+   #	LEGENDA*  #
+   ##############*/
+    /*  TLegend legend = new TLegend(0.1,0.7,0.48,0.9);
+   legend->SetHeader("The Legend Title","C"); // option "C" allows to center the header
+   legend->AddEntry(h1,"Histogram filled with random numbers","f");
+   legend->AddEntry("f1","Function abs(#frac{sin(x)}{x})","l");
+   legend->AddEntry("gr","Graph with error bars","lep");
+   legend->Draw();*/
    
 	
 	

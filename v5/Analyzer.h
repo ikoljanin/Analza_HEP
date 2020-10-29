@@ -57,6 +57,7 @@ public :
    //Varijable klase TH1F
    TH1F *Histo1;
    TH1F *Histo2;
+   TH1F *Higgs_Histo;
 
    Analyzer(TTree *tree=0);
    virtual ~Analyzer();
@@ -67,7 +68,7 @@ public :
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-   //#dodana funkcija
+   //#dodana funkcija za crtanje histograma
    virtual void PlotHistogram();
 };
 
