@@ -104,8 +104,8 @@ void Analyzer::PlotHistogram()
 		p2->SetPxPyPzE(px2_class,py2_class,pz2_class,E2_class);
 		//zbrojeni četverovektori
 		*Higgs=*p1+*p2;
-		//Histogram transverzalne količine gibanja Higgsa
-		Higgs_Histo->Fill(sqrt(Higgs->Px()*Higgs->Px()+Higgs->Py()*Higgs->Py()));
+		//Histogram transverzalne količine gibanja Higgsa (fillanje se dešava u petlji)
+		Higgs_Histo->Fill(Higgs->Pt());
    }
    /*####################
    #	HISTOGRAM		#
@@ -123,7 +123,7 @@ void Analyzer::PlotHistogram()
 	c1->cd(1);
 	Histo1->Draw();//kreiranje histograma  //po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
 	//Postavljanje x i y osi histograma
-	Histo1->GetXaxis()->SetTitle("Decay particle pT [GeV/C]");
+	Histo1->GetXaxis()->SetTitle("Decay particle p_{T} [GeV/C]");
 	Histo1->GetYaxis()->SetTitle("Number of events");
 	//mijenjanje boje histograma
 	Histo1->SetLineColor(kGreen);
@@ -135,8 +135,8 @@ void Analyzer::PlotHistogram()
 	//dodavanje legende na livu stranu platna
 	TLegend* leg1;
 	leg1 = new TLegend(0.9,0.8,0.48,0.9);
-	leg1->AddEntry(Histo1, "First decay particle pT", "l");
-	leg1->AddEntry(Histo2, "Secund decay particle pT", "l");
+	leg1->AddEntry(Histo1, "First decay particle p_{T}", "l");
+	leg1->AddEntry(Histo2, "Secund decay particle p_{T}", "l");
 	leg1->Draw();
 	
 	//crtanje na desnoj strani platna
