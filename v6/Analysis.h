@@ -1442,6 +1442,8 @@ public :
    virtual void     Show(Long64_t entry = -1);
    virtual void PlotHistogram();
    virtual void Reconstruction();
+   public:
+	TH1F *counter;
 };
 
 #endif
@@ -1449,10 +1451,15 @@ public :
 #ifdef Analysis_cxx
 Analysis::Analysis(TTree *tree) : fChain(0) 
 {
+	TFile *f;
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
-   if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/home/public/data/ggH125/ZZ4lAnalysis.root");
+	//#################
+	//UČITAVANJE HITOGRAMA IZ ROOT FILE
+   if (tree == 0) 
+   {
+	   //DIREKTORIJ IZ KOJEG UČITAVAMO
+     f = (TFile*)gROOT->GetListOfFiles()->FindObject("/home/public/data/ggH125/ZZ4lAnalysis.root");
       if (!f || !f->IsOpen()) {
          f = new TFile("/home/public/data/ggH125/ZZ4lAnalysis.root");
       }
@@ -1461,6 +1468,9 @@ Analysis::Analysis(TTree *tree) : fChain(0)
 
    }
    Init(tree);
+   //KOJI HISTOGRAM UČITAVAMO
+	counter = (TH1F*)f->Get("ZZTree/Counters");
+	//cout<<counter->GetBinContent(40);
 }
 
 Analysis::~Analysis()

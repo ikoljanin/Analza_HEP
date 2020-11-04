@@ -5,7 +5,7 @@ int main()
 {
     Analysis *A;
 	A=new Analysis();
-	//A->PlotHistogram();
+	A->PlotHistogram();
 	A->Reconstruction();
     
     return 0;

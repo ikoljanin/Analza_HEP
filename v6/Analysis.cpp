@@ -55,14 +55,16 @@ void Analysis::Loop()
 void Analysis::PlotHistogram()
 {
 	//deklaracija objekta klase histograma TH1F (DEFINIRAN U .H)
-	TH1F *Histo1;
-	/*TH1F *Histo2;
-	TH1F *Higgs_Histo;
-	Histo1=new TH1F("LepPt","Lepton transversal momentum",100,0,140);
-	Histo2=new TH1F("Transverzalna_2","Decay particles transversal momentum",100,0,140);
-	Higgs_Histo=new TH1F("Transverzalna_2","Higgs transversal momentum",100,0,140);
+	TH1F *pT_histo;
+	TH1F *Eta_histo;
+	TH1F *Phi_histo;
+	TH1F *BDT_histo;
 	
-	*/
+	pT_histo=new TH1F("LepPt","Decay created lepton transversal momentum",100,0,140);
+	Eta_histo=new TH1F("LepEta","Decay created lepton pseudorapidity",100,0,5);
+	Phi_histo=new TH1F("LepPhi","Decay created lepton azimuthal angle",100,0,5);
+	BDT_histo=new TH1F("LepBDT","Decay created lepton BDT results",100,0,2);
+	
 	
 	 if (fChain == 0) 
 	 {
@@ -87,8 +89,11 @@ void Analysis::PlotHistogram()
 		// if (Cut(ientry) < 0) continue;
 		/*# KREIRANJE HISTOGRAMA #*/
 		//varijable se mogu pozivati originalnim imenima (imena brancheva) jer ih root file automatski roota
-		Histo1->Fill(LepPt->at(2)); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
-   }
+		pT_histo->Fill(LepPt->at(1)); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
+		Eta_histo->Fill(LepEta->at(1));
+		Phi_histo->Fill(LepPhi->at(1));
+		BDT_histo->Fill(LepBDT->at(1));
+	}
    /*####################
    #	HISTOGRAM		#
    ####################*/
@@ -103,42 +108,80 @@ void Analysis::PlotHistogram()
 
 	//crtanje na gornjoj lijevoj strani platna
 	c1->cd(1);
-	Histo1->Draw();//kreiranje histograma  //po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
+	pT_histo->Draw();//kreiranje histograma  //po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
 	//Postavljanje x i y osi histograma
-	Histo1->GetXaxis()->SetTitle("Decay particle pT [GeV/C]");
-	Histo1->GetYaxis()->SetTitle("Number of events");
+	pT_histo->GetXaxis()->SetTitle("Lepton p_{T} [GeV/C]");
+	pT_histo->GetXaxis()->SetLabelSize(0.04);
+	pT_histo->GetYaxis()->SetTitle("Number of events");
+	pT_histo->GetYaxis()->SetTitleOffset(1.5);
+	pT_histo->GetYaxis()->SetLabelSize(0.04);
 	//mijenjanje boje histograma
-	Histo1->SetLineColor(kGreen);
-	Histo1->SetFillColor(kGreen);
-	/*c1->Update();
-	//crtanje drugog histograma na istom "platnu"
-	Histo2->Draw("same");
-	Histo2->SetLineWidth(2);
-	//dodavanje legende na livu stranu platna
-	TLegend* leg1;
-	leg1 = new TLegend(0.9,0.8,0.48,0.9);
-	leg1->AddEntry(Histo1, "First decay particle pT", "l");
-	leg1->AddEntry(Histo2, "Secund decay particle pT", "l");
-	leg1->Draw();
+	pT_histo->SetLineColor(kGreen-2);
+	pT_histo->SetFillColor(kGreen-2);
+	//legenda
+	TLegend* pT_histo_leg;
+	pT_histo_leg = new TLegend(0.9,0.8,0.7,0.9);
+	pT_histo_leg->AddEntry(pT_histo, "Decay lepton p_{T}", "l");
+	pT_histo_leg->SetTextSize(0.03);
+	pT_histo_leg->Draw();
 	
-	//crtanje na desnoj strani platna
+	//crtanje na gornjoj desnoj strani platna
 	c1->cd(2);
-    Higgs_Histo->Draw();
-	Higgs_Histo->SetLineColor(kRed);
-	Higgs_Histo->SetLineWidth(1.5);
-	Higgs_Histo->GetXaxis()->SetTitle("Higgs pT [GeV/C]");
-	Higgs_Histo->GetYaxis()->SetTitle("Number of events");
-	//dodavanje legende na desnu stranu platna
-	TLegend* leg2;
-	leg2 = new TLegend(0.1,0.85,0.40,0.9);
-	leg2->AddEntry(Higgs_Histo, "Higgs pT", "l");
-	leg2->Draw();
+	Eta_histo->Draw();
+	//Postavljanje x i y osi histograma
+	Eta_histo->GetXaxis()->SetTitle("Lepton Eta");
+	Eta_histo->GetXaxis()->SetLabelSize(0.04);
+	Eta_histo->GetYaxis()->SetTitle("Number of events");
+	Eta_histo->GetYaxis()->SetTitleOffset(1.5);
+	Eta_histo->GetYaxis()->SetLabelSize(0.04);
+	//mijenjanje boje histograma
+	Eta_histo->SetLineColor(kGreen-2);
+	Eta_histo->SetFillColor(kGreen-2);
+	//legenda
+	TLegend* Eta_histo_leg;
+	Eta_histo_leg = new TLegend(0.9,0.8,0.5,0.9);
+	Eta_histo_leg->AddEntry(Eta_histo, "Decay lepton pseudorapidity", "l");
+	Eta_histo_leg->SetTextSize(0.03);
+	Eta_histo_leg->Draw();
+	
+	//crtanje na donjoj lijevoj strani platna
+	c1->cd(3);
+	Phi_histo->Draw();
+	//Postavljanje x i y osi histograma
+	Phi_histo->GetXaxis()->SetTitle("Lepton Phi");
+	Phi_histo->GetXaxis()->SetLabelSize(0.04);
+	Phi_histo->GetYaxis()->SetTitle("Number of events");
+	Phi_histo->GetYaxis()->SetTitleOffset(1.5);
+	Phi_histo->GetYaxis()->SetLabelSize(0.04);
+	//mijenjanje boje histograma
+	Phi_histo->SetLineColor(kGreen-2);
+	Phi_histo->SetFillColor(kGreen-2);
+	//legenda
+	TLegend* Phi_histo_leg;
+	Phi_histo_leg = new TLegend(0.9,0.8,0.6,0.9);
+	Phi_histo_leg->AddEntry(Phi_histo, "Decay lepton azim. angle", "l");
+	Phi_histo_leg->SetTextSize(0.03);
+	Phi_histo_leg->Draw();
+	
+	//crtanje na donjoj desnoj strani platna
+	c1->cd(4);
+	BDT_histo->Draw();
+	//Postavljanje x i y osi histograma
+	BDT_histo->GetXaxis()->SetTitle("Lepton BDT");
+	BDT_histo->GetXaxis()->SetLabelSize(0.04);
+	BDT_histo->GetYaxis()->SetTitle("Number of events");
+	BDT_histo->GetYaxis()->SetTitleOffset(1.5);
+	BDT_histo->GetYaxis()->SetLabelSize(0.03);
+	//mijenjanje boje histograma
+	BDT_histo->SetLineColor(kGreen-2);
+	BDT_histo->SetFillColor(kGreen-2);
+	//legenda
+	TLegend* BDT_histo_leg;
+	BDT_histo_leg = new TLegend(0.9,0.8,0.6,0.9);
+	BDT_histo_leg->AddEntry(BDT_histo, "Decay lepton BDT", "l");
+	BDT_histo_leg->SetTextSize(0.03);
+	BDT_histo_leg->Draw();
 
-	//spremanje histograma u razlicite formate
-	
-	c1->SaveAs("Pt1.png");
-	c1->SaveAs("Pt1.root");	*/
-	
 	c1->SaveAs("Pt1.pdf");
 }
 
@@ -165,6 +208,8 @@ void Analysis::Reconstruction()
 	Z1=new TLorentzVector();
 	Z2=new TLorentzVector();
 	Higgs=new TLorentzVector();
+	//težina svakog događaja (u svakom događaju imamo 4 leptona)
+	double w;
 	if (fChain == 0) 
 	 {
 		 return;
@@ -172,10 +217,10 @@ void Analysis::Reconstruction()
 	Long64_t nentries = fChain->GetEntriesFast();
 	Long64_t nbytes = 0, nb = 0;
 	TCanvas *cc ;
-		//uklanjanje default legende s platna (u zagradu ide nula onoliko koliko default doda u legendu članova)
-		gStyle->SetOptStat(0);
-		cc= new TCanvas("cc","cc",1600,900);
-		Higgs_Histo->Draw();
+	//uklanjanje default legende s platna (u zagradu ide nula onoliko koliko default doda u legendu članova)
+	gStyle->SetOptStat(0);
+	cc= new TCanvas("cc","cc",1600,900);
+
 	for (Long64_t jentry=0; jentry<nentries;jentry++) 
    {
 		Long64_t ientry = LoadTree(jentry);
@@ -194,12 +239,31 @@ void Analysis::Reconstruction()
 		*Z2=*L3+*L4;
 		//zbrojeni četverovektori
 		*Higgs=*Z1+*Z2;
-		//HFillanje histograma dašava se unutra
-		Higgs_Histo->Fill(Higgs->M());
+		//HFillanje histograma dešava se unutra
+		//izračunata težina koja se dodjeljuje fillanju svakog događaja
+		w=(xsec*1000*overallEventWeight*137)/counter->GetBinContent(40);
+		Higgs_Histo->Fill(Higgs->M(),w);
 		
    }
+   		Higgs_Histo->Draw("HISTO");
+		Higgs_Histo->GetXaxis()->SetTitle("Lepton BDT");
+		Higgs_Histo->GetXaxis()->SetLabelSize(0.04);
+		Higgs_Histo->GetYaxis()->SetTitle("Number of events");
+		Higgs_Histo->GetYaxis()->SetTitleOffset(1.5);
+		Higgs_Histo->GetYaxis()->SetLabelSize(0.04);
+		//mijenjanje boje histograma
+		Higgs_Histo->SetLineColor(kRed-2);
+		Higgs_Histo->SetFillColor(kRed-2);
+		//legenda
+		TLegend* Higgs_Histo_leg;
+		Higgs_Histo_leg = new TLegend(0.1,0.8,0.7,0.9);
+		Higgs_Histo_leg->AddEntry(Higgs_Histo, "Decay lepton BDT", "l");
+		Higgs_Histo_leg->AddEntry(Higgs_Histo, "Number of reconstructed Higgs boson = 228.599", "l");
+		Higgs_Histo_leg->SetTextSize(0.03);
+		Higgs_Histo_leg->Draw();
 		cc->SaveAs("Higgs_mass.pdf");
-   
+		//cout<<Higgs_Histo->Integral()<<endl;
+		//integral se računa preko rootove funkcije koja integrira histogram
 	
 }
 
