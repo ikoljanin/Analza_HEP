@@ -61,9 +61,9 @@ void Analysis::PlotHistogram()
 	TH1F *BDT_histo;
 	
 	pT_histo=new TH1F("LepPt","Decay created lepton transversal momentum",100,0,140);
-	Eta_histo=new TH1F("LepEta","Decay created lepton pseudorapidity",100,0,5);
-	Phi_histo=new TH1F("LepPhi","Decay created lepton azimuthal angle",100,0,5);
-	BDT_histo=new TH1F("LepBDT","Decay created lepton BDT results",100,0,2);
+	Eta_histo=new TH1F("LepEta","Decay created lepton pseudorapidity",100,-4,4);
+	Phi_histo=new TH1F("LepPhi","Decay created lepton azimuthal angle",100,-4,4);
+	BDT_histo=new TH1F("LepBDT","Decay created lepton BDT results",100,0,10);
 	
 	
 	 if (fChain == 0) 
@@ -110,7 +110,7 @@ void Analysis::PlotHistogram()
 	c1->cd(1);
 	pT_histo->Draw();//kreiranje histograma  //po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
 	//Postavljanje x i y osi histograma
-	pT_histo->GetXaxis()->SetTitle("Lepton p_{T} [GeV/C]");
+	pT_histo->GetXaxis()->SetTitle("2nd lepton p_{T} [GeV/C]");
 	pT_histo->GetXaxis()->SetLabelSize(0.04);
 	pT_histo->GetYaxis()->SetTitle("Number of events");
 	pT_histo->GetYaxis()->SetTitleOffset(1.5);
@@ -121,7 +121,7 @@ void Analysis::PlotHistogram()
 	//legenda
 	TLegend* pT_histo_leg;
 	pT_histo_leg = new TLegend(0.9,0.8,0.7,0.9);
-	pT_histo_leg->AddEntry(pT_histo, "Decay lepton p_{T}", "l");
+	pT_histo_leg->AddEntry(pT_histo, " 2nd decay lepton p_{T}", "l");
 	pT_histo_leg->SetTextSize(0.03);
 	pT_histo_leg->Draw();
 	
@@ -129,7 +129,7 @@ void Analysis::PlotHistogram()
 	c1->cd(2);
 	Eta_histo->Draw();
 	//Postavljanje x i y osi histograma
-	Eta_histo->GetXaxis()->SetTitle("Lepton Eta");
+	Eta_histo->GetXaxis()->SetTitle("2nd lepton Eta");
 	Eta_histo->GetXaxis()->SetLabelSize(0.04);
 	Eta_histo->GetYaxis()->SetTitle("Number of events");
 	Eta_histo->GetYaxis()->SetTitleOffset(1.5);
@@ -140,7 +140,7 @@ void Analysis::PlotHistogram()
 	//legenda
 	TLegend* Eta_histo_leg;
 	Eta_histo_leg = new TLegend(0.9,0.8,0.5,0.9);
-	Eta_histo_leg->AddEntry(Eta_histo, "Decay lepton pseudorapidity", "l");
+	Eta_histo_leg->AddEntry(Eta_histo, "2nd decay lepton pseudorapidity", "l");
 	Eta_histo_leg->SetTextSize(0.03);
 	Eta_histo_leg->Draw();
 	
@@ -148,7 +148,7 @@ void Analysis::PlotHistogram()
 	c1->cd(3);
 	Phi_histo->Draw();
 	//Postavljanje x i y osi histograma
-	Phi_histo->GetXaxis()->SetTitle("Lepton Phi");
+	Phi_histo->GetXaxis()->SetTitle("2nd lepton Phi");
 	Phi_histo->GetXaxis()->SetLabelSize(0.04);
 	Phi_histo->GetYaxis()->SetTitle("Number of events");
 	Phi_histo->GetYaxis()->SetTitleOffset(1.5);
@@ -159,7 +159,7 @@ void Analysis::PlotHistogram()
 	//legenda
 	TLegend* Phi_histo_leg;
 	Phi_histo_leg = new TLegend(0.9,0.8,0.6,0.9);
-	Phi_histo_leg->AddEntry(Phi_histo, "Decay lepton azim. angle", "l");
+	Phi_histo_leg->AddEntry(Phi_histo, "2nd decay lepton azim. angle", "l");
 	Phi_histo_leg->SetTextSize(0.03);
 	Phi_histo_leg->Draw();
 	
@@ -167,7 +167,7 @@ void Analysis::PlotHistogram()
 	c1->cd(4);
 	BDT_histo->Draw();
 	//Postavljanje x i y osi histograma
-	BDT_histo->GetXaxis()->SetTitle("Lepton BDT");
+	BDT_histo->GetXaxis()->SetTitle("2nd lepton BDT");
 	BDT_histo->GetXaxis()->SetLabelSize(0.04);
 	BDT_histo->GetYaxis()->SetTitle("Number of events");
 	BDT_histo->GetYaxis()->SetTitleOffset(1.5);
@@ -178,7 +178,7 @@ void Analysis::PlotHistogram()
 	//legenda
 	TLegend* BDT_histo_leg;
 	BDT_histo_leg = new TLegend(0.9,0.8,0.6,0.9);
-	BDT_histo_leg->AddEntry(BDT_histo, "Decay lepton BDT", "l");
+	BDT_histo_leg->AddEntry(BDT_histo, "2nd decay lepton BDT", "l");
 	BDT_histo_leg->SetTextSize(0.03);
 	BDT_histo_leg->Draw();
 
@@ -190,7 +190,7 @@ void Analysis::PlotHistogram()
 void Analysis::Reconstruction()
 {
 	TH1F *Higgs_Histo;
-	Higgs_Histo=new TH1F("Mass","Higgs mass",100,0,140);
+	Higgs_Histo=new TH1F("Mass","Higgs mass",100,50,140);
 	
 	//čestice raspada Higgsa kao elementi klase TLorentzVecotr
 	TLorentzVector *L1;//prva čestica raspada
