@@ -78,7 +78,6 @@ void Analysis::PlotHistogram()
 	/*###########################################
 	#	UCITAVANJE PODATAKKA ZA FILL HISTOGRAMA #
 	###########################################*/
-	
    for (Long64_t jentry=0; jentry<nentries;jentry++) 
    {
 		Long64_t ientry = LoadTree(jentry);
@@ -86,10 +85,9 @@ void Analysis::PlotHistogram()
 		{
 			break;
 		}
-		//skaliranje y osi
-		scal=(xsec*1000*overallEventWeight*137)/counter->GetBinContent(40);
 		nb = fChain->GetEntry(jentry); 
 		nbytes += nb;
+		scal=(xsec*1000*overallEventWeight*137)/counter->GetBinContent(40);
 		// if (Cut(ientry) < 0) continue;
 		/*# KREIRANJE HISTOGRAMA #*/
 		//varijable se mogu pozivati originalnim imenima (imena brancheva) jer ih root file automatski roota
@@ -194,7 +192,8 @@ void Analysis::PlotHistogram()
 void Analysis::Reconstruction()
 {
 	TH1F *Higgs_Histo;
-	Higgs_Histo=new TH1F("Mass","Higgs mass",100,50,140);
+	//bin širine 2 GeV...25 događaja u rasponu od 50 
+	Higgs_Histo=new TH1F("Mass","Higgs mass",25,90,140);
 	
 	//čestice raspada Higgsa kao elementi klase TLorentzVecotr
 	TLorentzVector *L1;//prva čestica raspada
@@ -252,7 +251,7 @@ void Analysis::Reconstruction()
    		Higgs_Histo->Draw("HISTO");
 		Higgs_Histo->GetXaxis()->SetTitle("Higgs mass");
 		Higgs_Histo->GetXaxis()->SetLabelSize(0.04);
-		Higgs_Histo->GetYaxis()->SetTitle("Number of events");
+		Higgs_Histo->GetYaxis()->SetTitle("Events /2GeV");
 		Higgs_Histo->GetYaxis()->SetTitleOffset(1.5);
 		Higgs_Histo->GetYaxis()->SetLabelSize(0.04);
 		//mijenjanje boje histograma
@@ -260,15 +259,15 @@ void Analysis::Reconstruction()
 		Higgs_Histo->SetFillColor(kRed-2);
 		//legenda
 		TLegend* Higgs_Histo_leg;
-		Higgs_Histo_leg = new TLegend(0.1,0.75,0.7,0.9);
+		Higgs_Histo_leg = new TLegend(0.1,0.75,0.5,0.9);
 		Higgs_Histo_leg->AddEntry(Higgs_Histo, "Reconstructed Higgs", "l");
 		//Higgs_Histo_leg->AddEntry((TObject*)0, "", "");
-		Higgs_Histo_leg->AddEntry((TObject*)0, "Number of reconstructed Higgs boson = 228.599", "");
+		Higgs_Histo_leg->AddEntry((TObject*)0, "Number of reconstructed Higgs boson = 226.475", "");
 		//Higgs_Histo_leg->AddEntry((TObject*)0, "", "");
-		Higgs_Histo_leg->SetTextSize(0.03);
+		Higgs_Histo_leg->SetTextSize(0.02);
 		Higgs_Histo_leg->Draw();
 		cc->SaveAs("Higgs_mass.pdf");
-		//cout<<Higgs_Histo->Integral()<<endl;
+		cout<<Higgs_Histo->Integral()<<endl;
 		//integral se računa preko rootove funkcije koja integrira histogram
 	
 }
