@@ -72,11 +72,13 @@ void Analysis::PlotHistogram()
 	 }
 	Long64_t nentries = fChain->GetEntriesFast();
 	Long64_t nbytes = 0, nb = 0;
+	double scal;
 	//petlja po svim branchevima 
 	// jentry 0 je svih 13 brancheva za 1. raspad, jentry 2 13 brancheva za 2. raspad etc.
 	/*###########################################
 	#	UCITAVANJE PODATAKKA ZA FILL HISTOGRAMA #
 	###########################################*/
+	
    for (Long64_t jentry=0; jentry<nentries;jentry++) 
    {
 		Long64_t ientry = LoadTree(jentry);
@@ -84,15 +86,17 @@ void Analysis::PlotHistogram()
 		{
 			break;
 		}
+		//skaliranje y osi
+		scal=(xsec*1000*overallEventWeight*137)/counter->GetBinContent(40);
 		nb = fChain->GetEntry(jentry); 
 		nbytes += nb;
 		// if (Cut(ientry) < 0) continue;
 		/*# KREIRANJE HISTOGRAMA #*/
 		//varijable se mogu pozivati originalnim imenima (imena brancheva) jer ih root file automatski roota
-		pT_histo->Fill(LepPt->at(1)); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
-		Eta_histo->Fill(LepEta->at(1));
-		Phi_histo->Fill(LepPhi->at(1));
-		BDT_histo->Fill(LepBDT->at(1));
+		pT_histo->Fill(LepPt->at(1),scal); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
+		Eta_histo->Fill(LepEta->at(1),scal);
+		Phi_histo->Fill(LepPhi->at(1),scal);
+		BDT_histo->Fill(LepBDT->at(1),scal);
 	}
    /*####################
    #	HISTOGRAM		#
@@ -108,7 +112,7 @@ void Analysis::PlotHistogram()
 
 	//crtanje na gornjoj lijevoj strani platna
 	c1->cd(1);
-	pT_histo->Draw();//kreiranje histograma  //po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
+	pT_histo->Draw("HISTO");//kreiranje histograma  //po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
 	//Postavljanje x i y osi histograma
 	pT_histo->GetXaxis()->SetTitle("2nd lepton p_{T} [GeV/C]");
 	pT_histo->GetXaxis()->SetLabelSize(0.04);
@@ -127,7 +131,7 @@ void Analysis::PlotHistogram()
 	
 	//crtanje na gornjoj desnoj strani platna
 	c1->cd(2);
-	Eta_histo->Draw();
+	Eta_histo->Draw("HISTO");
 	//Postavljanje x i y osi histograma
 	Eta_histo->GetXaxis()->SetTitle("2nd lepton Eta");
 	Eta_histo->GetXaxis()->SetLabelSize(0.04);
@@ -146,7 +150,7 @@ void Analysis::PlotHistogram()
 	
 	//crtanje na donjoj lijevoj strani platna
 	c1->cd(3);
-	Phi_histo->Draw();
+	Phi_histo->Draw("HISTO");
 	//Postavljanje x i y osi histograma
 	Phi_histo->GetXaxis()->SetTitle("2nd lepton Phi");
 	Phi_histo->GetXaxis()->SetLabelSize(0.04);
@@ -165,7 +169,7 @@ void Analysis::PlotHistogram()
 	
 	//crtanje na donjoj desnoj strani platna
 	c1->cd(4);
-	BDT_histo->Draw();
+	BDT_histo->Draw("HISTO");
 	//Postavljanje x i y osi histograma
 	BDT_histo->GetXaxis()->SetTitle("2nd lepton BDT");
 	BDT_histo->GetXaxis()->SetLabelSize(0.04);
