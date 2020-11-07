@@ -60,10 +60,10 @@ void Analysis::PlotHistogram()
 	TH1F *Phi_histo;
 	TH1F *BDT_histo;
 	
-	pT_histo=new TH1F("LepPt","Decay created lepton transversal momentum",100,0,140);
-	Eta_histo=new TH1F("LepEta","Decay created lepton pseudorapidity",100,-4,4);
-	Phi_histo=new TH1F("LepPhi","Decay created lepton azimuthal angle",100,-4,4);
-	BDT_histo=new TH1F("LepBDT","Decay created lepton BDT results",100,0,10);
+	pT_histo=new TH1F("LepPt","Decay created lepton transversal momentum",50,0,140);
+	Eta_histo=new TH1F("LepEta","Decay created lepton pseudorapidity",80,-4,4);
+	Phi_histo=new TH1F("LepPhi","Decay created lepton azimuthal angle",80,-4,4);
+	BDT_histo=new TH1F("LepBDT","Decay created lepton BDT results",30,0,10);
 	
 	
 	 if (fChain == 0) 
@@ -114,7 +114,7 @@ void Analysis::PlotHistogram()
 	//Postavljanje x i y osi histograma
 	pT_histo->GetXaxis()->SetTitle("2nd lepton p_{T} [GeV/C]");
 	pT_histo->GetXaxis()->SetLabelSize(0.04);
-	pT_histo->GetYaxis()->SetTitle("Number of events");
+	pT_histo->GetYaxis()->SetTitle("Number of events /2.5 GeV");
 	pT_histo->GetYaxis()->SetTitleOffset(1.5);
 	pT_histo->GetYaxis()->SetLabelSize(0.04);
 	//mijenjanje boje histograma
@@ -133,9 +133,9 @@ void Analysis::PlotHistogram()
 	//Postavljanje x i y osi histograma
 	Eta_histo->GetXaxis()->SetTitle("2nd lepton Eta");
 	Eta_histo->GetXaxis()->SetLabelSize(0.04);
-	Eta_histo->GetYaxis()->SetTitle("Number of events");
-	Eta_histo->GetYaxis()->SetTitleOffset(1.5);
+	Eta_histo->GetYaxis()->SetTitle("Number of events /0.1 GeV");
 	Eta_histo->GetYaxis()->SetLabelSize(0.04);
+	Eta_histo->SetMaximum(9);
 	//mijenjanje boje histograma
 	Eta_histo->SetLineColor(kGreen-2);
 	Eta_histo->SetFillColor(kGreen-2);
@@ -152,9 +152,9 @@ void Analysis::PlotHistogram()
 	//Postavljanje x i y osi histograma
 	Phi_histo->GetXaxis()->SetTitle("2nd lepton Phi");
 	Phi_histo->GetXaxis()->SetLabelSize(0.04);
-	Phi_histo->GetYaxis()->SetTitle("Number of events");
-	Phi_histo->GetYaxis()->SetTitleOffset(1.5);
+	Phi_histo->GetYaxis()->SetTitle("Number of events /0.1 GeV");
 	Phi_histo->GetYaxis()->SetLabelSize(0.04);
+	Phi_histo->SetMaximum(5);
 	//mijenjanje boje histograma
 	Phi_histo->SetLineColor(kGreen-2);
 	Phi_histo->SetFillColor(kGreen-2);
@@ -171,9 +171,10 @@ void Analysis::PlotHistogram()
 	//Postavljanje x i y osi histograma
 	BDT_histo->GetXaxis()->SetTitle("2nd lepton BDT");
 	BDT_histo->GetXaxis()->SetLabelSize(0.04);
-	BDT_histo->GetYaxis()->SetTitle("Number of events");
+	BDT_histo->GetYaxis()->SetTitle("Number of events /0.4 GeV");
 	BDT_histo->GetYaxis()->SetTitleOffset(1.5);
 	BDT_histo->GetYaxis()->SetLabelSize(0.03);
+	//BDT_histo->SetMaximum(22);
 	//mijenjanje boje histograma
 	BDT_histo->SetLineColor(kGreen-2);
 	BDT_histo->SetFillColor(kGreen-2);
@@ -249,11 +250,12 @@ void Analysis::Reconstruction()
 		
    }
    		Higgs_Histo->Draw("HISTO");
-		Higgs_Histo->GetXaxis()->SetTitle("Higgs mass");
+		Higgs_Histo->GetXaxis()->SetTitle("Higgs mass [GeV]");
 		Higgs_Histo->GetXaxis()->SetLabelSize(0.04);
 		Higgs_Histo->GetYaxis()->SetTitle("Events /2GeV");
 		Higgs_Histo->GetYaxis()->SetTitleOffset(1.5);
 		Higgs_Histo->GetYaxis()->SetLabelSize(0.04);
+		Higgs_Histo->SetMaximum(100);
 		//mijenjanje boje histograma
 		Higgs_Histo->SetLineColor(kRed-2);
 		Higgs_Histo->SetFillColor(kRed-2);
