@@ -55,16 +55,31 @@ void Analysis::Loop()
 void Analysis::PlotHistogram()
 {
 	//deklaracija objekta klase histograma TH1F (DEFINIRAN U .H)
-	TH1F *pT_histo;
-	TH1F *Eta_histo;
-	TH1F *Phi_histo;
-	TH1F *BDT_histo;
+	TH1F *pT1_histo,*pT2_histo,*pT3_histo,*pT4_histo;
+	TH1F *Eta1_histo,*Eta2_histo,*Eta3_histo,*Eta4_histo;
+	TH1F *Phi1_histo,*Phi2_histo,*Phi3_histo,*Phi4_histo;
+	TH1F *BDT1_histo,*BDT2_histo,*BDT3_histo,*BDT4_histo;
+
+	//širina bina=(početak-kraj)/broj binova ...(140-0)/50
+	pT1_histo=new TH1F("LepPt1","Decay created lepton transversal momentum",50,0,140);//bin 2.8 GeV
+	Eta1_histo=new TH1F("LepEta1","Decay created lepton pseudorapidity",80,-4,4);//bin 0.1
+	Phi1_histo=new TH1F("LepPhi1","Decay created lepton azimuthal angle",80,-4,4);//bin 0.1 rad
+	BDT1_histo=new TH1F("LepBDT1","Decay created lepton BDT results",30,0,10);//bin 0.33
 	
-	pT_histo=new TH1F("LepPt","Decay created lepton transversal momentum",50,0,140);
-	Eta_histo=new TH1F("LepEta","Decay created lepton pseudorapidity",80,-4,4);
-	Phi_histo=new TH1F("LepPhi","Decay created lepton azimuthal angle",80,-4,4);
-	BDT_histo=new TH1F("LepBDT","Decay created lepton BDT results",30,0,10);
+	pT2_histo=new TH1F("LepPt2","Decay created lepton transversal momentum",50,0,140);
+	Eta2_histo=new TH1F("LepEta2","Decay created lepton pseudorapidity",80,-4,4);
+	Phi2_histo=new TH1F("LepPhi2","Decay created lepton azimuthal angle",80,-4,4);
+	BDT2_histo=new TH1F("LepBDT2","Decay created lepton BDT results",30,0,10);
 	
+	pT3_histo=new TH1F("LepPt3","Decay created lepton transversal momentum",50,0,140);
+	Eta3_histo=new TH1F("LepEta3","Decay created lepton pseudorapidity",80,-4,4);
+	Phi3_histo=new TH1F("LepPhi3","Decay created lepton azimuthal angle",80,-4,4);
+	BDT3_histo=new TH1F("LepBDT3","Decay created lepton BDT results",30,0,10);
+	
+	pT4_histo=new TH1F("LepPt4","Decay created lepton transversal momentum",50,0,140);
+	Eta4_histo=new TH1F("LepEta4","Decay created lepton pseudorapidity",80,-4,4);
+	Phi4_histo=new TH1F("LepPhi4","Decay created lepton azimuthal angle",80,-4,4);
+	BDT4_histo=new TH1F("LepBDT4","Decay created lepton BDT results",30,0,10);
 	
 	 if (fChain == 0) 
 	 {
@@ -91,10 +106,25 @@ void Analysis::PlotHistogram()
 		// if (Cut(ientry) < 0) continue;
 		/*# KREIRANJE HISTOGRAMA #*/
 		//varijable se mogu pozivati originalnim imenima (imena brancheva) jer ih root file automatski roota
-		pT_histo->Fill(LepPt->at(1),scal); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
-		Eta_histo->Fill(LepEta->at(1),scal);
-		Phi_histo->Fill(LepPhi->at(1),scal);
-		BDT_histo->Fill(LepBDT->at(1),scal);
+		pT1_histo->Fill(LepPt->at(0),scal); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
+		Eta1_histo->Fill(LepEta->at(0),scal);
+		Phi1_histo->Fill(LepPhi->at(0),scal);
+		BDT1_histo->Fill(LepBDT->at(0),scal);
+		
+		pT2_histo->Fill(LepPt->at(1),scal); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
+		Eta2_histo->Fill(LepEta->at(1),scal);
+		Phi2_histo->Fill(LepPhi->at(1),scal);
+		BDT2_histo->Fill(LepBDT->at(1),scal);
+		
+		pT3_histo->Fill(LepPt->at(2),scal); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
+		Eta3_histo->Fill(LepEta->at(2),scal);
+		Phi3_histo->Fill(LepPhi->at(2),scal);
+		BDT3_histo->Fill(LepBDT->at(2),scal);
+		
+		pT4_histo->Fill(LepPt->at(3),scal); //u zagrade funkcija prima čime se želi filovat graf (PROLAZAK KROZ SVE BRANCHEVE SVAKOG RASPADA; U HISTOGRAM SE UBACUJE SAMO PT1)
+		Eta4_histo->Fill(LepEta->at(3),scal);
+		Phi4_histo->Fill(LepPhi->at(3),scal);
+		BDT4_histo->Fill(LepBDT->at(3),scal);
 	}
    /*####################
    #	HISTOGRAM		#
@@ -102,7 +132,7 @@ void Analysis::PlotHistogram()
    //Objekt klase canvas je "platno" na koje se ucrtava histogram
 	TCanvas *c1 ;
 	//uklanjanje default legende s platna (u zagradu ide nula onoliko koliko default doda u legendu članova)
-	gStyle->SetOptStat(0);
+	gStyle->SetOptStat(0000);
 	c1= new TCanvas("c1","c1",1600,900);
 	
 	//podjela platna na pola
@@ -110,79 +140,119 @@ void Analysis::PlotHistogram()
 
 	//crtanje na gornjoj lijevoj strani platna
 	c1->cd(1);
-	pT_histo->Draw("HISTO");//kreiranje histograma  //po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
+	pT1_histo->Draw("HISTO");//kreiranje histograma  //po defaultu pozivanje funkcije Draw traži zadnji canvas i na njega se crta
+	//crtanje histograma ostalih četica na istom platnu
+	pT2_histo->Draw("HISTO SAME");
+	pT3_histo->Draw("HISTO SAME");
+	pT4_histo->Draw("HISTO SAME");
 	//Postavljanje x i y osi histograma
-	pT_histo->GetXaxis()->SetTitle("2nd lepton p_{T} [GeV/C]");
-	pT_histo->GetXaxis()->SetLabelSize(0.04);
-	pT_histo->GetYaxis()->SetTitle("Number of events /2.5 GeV");
-	pT_histo->GetYaxis()->SetTitleOffset(1.5);
-	pT_histo->GetYaxis()->SetLabelSize(0.04);
+	pT1_histo->GetXaxis()->SetTitle("Decay epton p_{T} [GeV]");
+	pT1_histo->GetXaxis()->SetLabelSize(0.04);
+	pT1_histo->GetYaxis()->SetTitle("Number of events /2.8 GeV");
+	pT1_histo->GetYaxis()->SetTitleOffset(1.5);
+	pT1_histo->GetYaxis()->SetLabelSize(0.04);
+	pT1_histo->SetMaximum(40);
 	//mijenjanje boje histograma
-	pT_histo->SetLineColor(kGreen-2);
-	pT_histo->SetFillColor(kGreen-2);
+	pT1_histo->SetLineColor(kGreen-2);
+	pT2_histo->SetLineColor(kBlue-2);
+	pT3_histo->SetLineColor(kRed-2);
+	pT4_histo->SetLineColor(kYellow-2);
+	pT1_histo->SetFillColor(kGreen-2);
 	//legenda
 	TLegend* pT_histo_leg;
-	pT_histo_leg = new TLegend(0.9,0.8,0.7,0.9);
-	pT_histo_leg->AddEntry(pT_histo, " 2nd decay lepton p_{T}", "l");
-	pT_histo_leg->SetTextSize(0.03);
+	pT_histo_leg = new TLegend(0.9,0.7,0.5,0.9);
+	pT_histo_leg->AddEntry(pT1_histo, "First decay lepton p_{T}", "l");
+	pT_histo_leg->AddEntry(pT2_histo, "Secund decay lepton p_{T}", "l");
+	pT_histo_leg->AddEntry(pT3_histo, "Third decay lepton p_{T}", "l");
+	pT_histo_leg->AddEntry(pT4_histo, "Fourth decay lepton p_{T}", "l");
+	pT_histo_leg->SetTextSize(0.04);
 	pT_histo_leg->Draw();
 	
 	//crtanje na gornjoj desnoj strani platna
 	c1->cd(2);
-	Eta_histo->Draw("HISTO");
+	Eta1_histo->Draw("HISTO");
+	//crtanje histograma ostalih četica na istom platnu
+	Eta2_histo->Draw("HISTO SAME");
+	Eta3_histo->Draw("HISTO SAME");
+	Eta4_histo->Draw("HISTO SAME");
 	//Postavljanje x i y osi histograma
-	Eta_histo->GetXaxis()->SetTitle("2nd lepton Eta");
-	Eta_histo->GetXaxis()->SetLabelSize(0.04);
-	Eta_histo->GetYaxis()->SetTitle("Number of events /0.1 GeV");
-	Eta_histo->GetYaxis()->SetLabelSize(0.04);
-	Eta_histo->SetMaximum(9);
+	Eta1_histo->GetXaxis()->SetTitle("Decay lepton Eta ");
+	Eta1_histo->GetXaxis()->SetLabelSize(0.04);
+	Eta1_histo->GetYaxis()->SetTitle("Number of events /0.1 ");
+	Eta1_histo->GetYaxis()->SetLabelSize(0.04);
+	Eta1_histo->SetMaximum(11);
 	//mijenjanje boje histograma
-	Eta_histo->SetLineColor(kGreen-2);
-	Eta_histo->SetFillColor(kGreen-2);
+	Eta1_histo->SetLineColor(kGreen-2);
+	Eta1_histo->SetLineColor(kBlue-2);
+	Eta2_histo->SetLineColor(kRed-2);
+	Eta4_histo->SetLineColor(kYellow-2);
+	Eta1_histo->SetFillColor(kGreen-2);
 	//legenda
 	TLegend* Eta_histo_leg;
-	Eta_histo_leg = new TLegend(0.9,0.8,0.5,0.9);
-	Eta_histo_leg->AddEntry(Eta_histo, "2nd decay lepton pseudorapidity", "l");
-	Eta_histo_leg->SetTextSize(0.03);
+	Eta_histo_leg = new TLegend(0.9,0.7,0.4,0.9);
+	Eta_histo_leg->AddEntry(Eta1_histo, "First decay lepton pseudorapidity", "l");
+	Eta_histo_leg->AddEntry(Eta2_histo, "Secund decay lepton pseudorapidity", "l");
+	Eta_histo_leg->AddEntry(Eta3_histo, "Third decay lepton pseudorapidity", "l");
+	Eta_histo_leg->AddEntry(Eta4_histo, "Fourth decay lepton pseudorapidity", "l");
+	Eta_histo_leg->SetTextSize(0.04);
 	Eta_histo_leg->Draw();
 	
 	//crtanje na donjoj lijevoj strani platna
 	c1->cd(3);
-	Phi_histo->Draw("HISTO");
+	Phi1_histo->Draw("HISTO");
+	//crtanje histograma ostalih četica na istom platnu
+	Phi2_histo->Draw("HISTO SAME");
+	Phi3_histo->Draw("HISTO SAME");
+	Phi4_histo->Draw("HISTO SAME");
 	//Postavljanje x i y osi histograma
-	Phi_histo->GetXaxis()->SetTitle("2nd lepton Phi");
-	Phi_histo->GetXaxis()->SetLabelSize(0.04);
-	Phi_histo->GetYaxis()->SetTitle("Number of events /0.1 GeV");
-	Phi_histo->GetYaxis()->SetLabelSize(0.04);
-	Phi_histo->SetMaximum(5);
+	Phi1_histo->GetXaxis()->SetTitle("Decay lepton Phi [rad]");
+	Phi1_histo->GetXaxis()->SetLabelSize(0.04);
+	Phi1_histo->GetYaxis()->SetTitle("Number of events /0.1 rad");
+	Phi1_histo->GetYaxis()->SetLabelSize(0.04);
+	Phi1_histo->SetMaximum(6);
 	//mijenjanje boje histograma
-	Phi_histo->SetLineColor(kGreen-2);
-	Phi_histo->SetFillColor(kGreen-2);
+	Phi1_histo->SetLineColor(kGreen-2);
+	Phi2_histo->SetLineColor(kBlue-2);
+	Phi3_histo->SetLineColor(kRed-2);
+	Phi4_histo->SetLineColor(kYellow-2);
+	Phi1_histo->SetFillColor(kGreen-2);
 	//legenda
 	TLegend* Phi_histo_leg;
-	Phi_histo_leg = new TLegend(0.9,0.8,0.6,0.9);
-	Phi_histo_leg->AddEntry(Phi_histo, "2nd decay lepton azim. angle", "l");
-	Phi_histo_leg->SetTextSize(0.03);
+	Phi_histo_leg = new TLegend(0.9,0.7,0.4,0.9);
+	Phi_histo_leg->AddEntry(Phi1_histo, "First decay lepton azim. angle", "l");
+	Phi_histo_leg->AddEntry(Phi2_histo, "Secund decay lepton azim. angle", "l");
+	Phi_histo_leg->AddEntry(Phi3_histo, "Third decay lepton azim. angle", "l");
+	Phi_histo_leg->AddEntry(Phi4_histo, "Fourth decay lepton azim. angle", "l");
+	Phi_histo_leg->SetTextSize(0.04);
 	Phi_histo_leg->Draw();
 	
 	//crtanje na donjoj desnoj strani platna
 	c1->cd(4);
-	BDT_histo->Draw("HISTO");
+	BDT1_histo->Draw("HISTO");
+	//crtanje histograma ostalih četica na istom platnu
+	BDT2_histo->Draw("HISTO SAME");
+	BDT3_histo->Draw("HISTO SAME");
+	BDT4_histo->Draw("HISTO SAME");
 	//Postavljanje x i y osi histograma
-	BDT_histo->GetXaxis()->SetTitle("2nd lepton BDT");
-	BDT_histo->GetXaxis()->SetLabelSize(0.04);
-	BDT_histo->GetYaxis()->SetTitle("Number of events /0.4 GeV");
-	BDT_histo->GetYaxis()->SetTitleOffset(1.5);
-	BDT_histo->GetYaxis()->SetLabelSize(0.03);
-	//BDT_histo->SetMaximum(22);
+	BDT1_histo->GetXaxis()->SetTitle("Decay lepton BDT");
+	BDT1_histo->GetXaxis()->SetLabelSize(0.04);
+	BDT1_histo->GetYaxis()->SetTitle("Number of events /0.33 ");
+	BDT1_histo->GetYaxis()->SetTitleOffset(1.5);
+	BDT1_histo->GetYaxis()->SetLabelSize(0.03);
 	//mijenjanje boje histograma
-	BDT_histo->SetLineColor(kGreen-2);
-	BDT_histo->SetFillColor(kGreen-2);
+	BDT1_histo->SetLineColor(kGreen-2);
+	BDT2_histo->SetLineColor(kBlue-2);
+	BDT3_histo->SetLineColor(kRed-2);
+	BDT4_histo->SetLineColor(kYellow-2);
+	BDT1_histo->SetFillColor(kGreen-2);
 	//legenda
 	TLegend* BDT_histo_leg;
-	BDT_histo_leg = new TLegend(0.9,0.8,0.6,0.9);
-	BDT_histo_leg->AddEntry(BDT_histo, "2nd decay lepton BDT", "l");
-	BDT_histo_leg->SetTextSize(0.03);
+	BDT_histo_leg = new TLegend(0.9,0.7,0.5,0.9);
+	BDT_histo_leg->AddEntry(BDT1_histo, "First decay lepton BDT", "l");
+	BDT_histo_leg->AddEntry(BDT2_histo, "Secund decay lepton BDT", "l");
+	BDT_histo_leg->AddEntry(BDT3_histo, "Third decay lepton BDT", "l");
+	BDT_histo_leg->AddEntry(BDT4_histo, "Fourth decay lepton BDT", "l");
+	BDT_histo_leg->SetTextSize(0.04);
 	BDT_histo_leg->Draw();
 
 	c1->SaveAs("Pt1.pdf");
