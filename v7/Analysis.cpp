@@ -134,14 +134,24 @@ void Analysis::PlotHistogram(TString input_file)//funkcija prima root file iz ko
 		*Z2=*L3+*L4;
 		//zbrojeni četverovektori
 		*Higgs=*Z1+*Z2;
+		
+		//cout<<kinematic_disc<<endl;
+		//crtanje histograma signala i pozadine (ovisno o učitanom fileu)
 		if(input_file=="/home/public/data/ggH125/ZZ4lAnalysis.root")
 		{
 			Signal_histo->Fill(Higgs->M(),scal);//Ako su učitani podatci signala puni se ovaj histogram
 			//cout<<Higgs->M()<<endl;
+			//kinematička diskriminanta
+			kinematic_disc=1/(1+(1*p_QQB_BKG_MCFM)/p_GG_SIG_ghg2_1_ghz1_1_JHUGen);
+			Signal_histo_KD->Fill(kinematic_disc);
 		}
 		if(input_file=="/home/public/data/qqZZ/ZZ4lAnalysis.root")
 		{
 			Back_histo->Fill(Higgs->M(),scal);//ako su učitani pozadinski podatci puni se ovaj histogram
+			//kinematička diskriminanta
+			kinematic_disc=1/(1+(70*p_QQB_BKG_MCFM)/p_GG_SIG_ghg2_1_ghz1_1_JHUGen);
+			Back_histo_KD->Fill(kinematic_disc);
+			
 		}	
 	}
 		
@@ -279,16 +289,16 @@ void Analysis::PlotHistogram(TString input_file)//funkcija prima root file iz ko
 //na taj način dobiju se div različite slike
 	if(input_file=="/home/public/data/ggH125/ZZ4lAnalysis.root")
 	{
-		lepton_canvas->SaveAs("Signal_histo.pdf");
+		lepton_canvas->SaveAs("Signal_histo.pdf");//signali raspada
 	}
-	if(input_file=="/home/public/data/qqZZ/ZZ4lAnalysis.root")
+	if(input_file=="/home/public/data/qqZZ/ZZ4lAnalysiss.root")
 	{
-		lepton_canvas->SaveAs("Back_histo.pdf");
+		lepton_canvas->SaveAs("Back_histo.pdf");//pozadina raspada
 	}
 }
 
 /*#######################################################
-#	FUNKCIJA KOJA KOMBINIRA HISTO ZA POZADINU I SIGNAL	#
+#	FUNKCIJA KOJA STACKA HISTO ZA POZADINU I SIGNAL	#
 #######################################################*/
 
 void Analysis::Reconstruction_plot()
@@ -315,6 +325,36 @@ void Analysis::Reconstruction_plot()
 		Higgs_legend->AddEntry(Back_histo, "Background");
 		Higgs_legend->Draw();
 		combined_canvas->SaveAs("Higgs_mass_histo.pdf");
+	
+		
+}
+
+/*##############################################
+# F-JA ZA PLOTANJE KINEMATIČKOG DISKRIMINATORA #
+###############################################*/
+void Analysis::Reconstruction_plot_KD()
+{
+		TCanvas *combined_canvas_KD;
+		combined_canvas_KD=	new TCanvas("cc","cc",1600,900);
+		//normalizacija na 1 (dobia kad san gugla normalizaciju histograma)
+		Signal_histo_KD->Scale(1/Signal_histo_KD->Integral());
+		Back_histo_KD->Scale(1/Back_histo_KD->Integral());
+		//crtanje kinematičkog diskriminatora za pozadinu i signal na istom platnu
+		Signal_histo_KD->Draw("HISTO");
+		Back_histo_KD->Draw("HISTO SAME");
+		//
+		Signal_histo_KD->SetLineColor(kRed);
+		Signal_histo_KD->SetLineWidth(1.5);
+		Back_histo->SetLineColor(kBlue);
+		Back_histo_KD->SetLineWidth(1.5);
+		//setiranje legende i osi
+		Signal_histo_KD->GetXaxis()->SetTitle("Discrimin");
+		Signal_histo_KD->GetYaxis()->SetTitle("Events/0.1");
+		TLegend *disc_leg = new TLegend(0.4,0.8,0.6,0.9);  //x1,y1,x2,y2 are the coordinates of the Legend
+		disc_leg->AddEntry(Signal_histo_KD,"Fusion signal");
+		disc_leg->AddEntry(Back_histo_KD, "Background");
+		disc_leg->Draw();
+		combined_canvas_KD->SaveAs("Higgs_mass_histo_KD.pdf");
 }
 
 
