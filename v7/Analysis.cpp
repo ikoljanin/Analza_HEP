@@ -8,6 +8,7 @@
 #include <TColor.h>
 #include <TLorentzVector.h>
 #include <TLegend.h>
+#include <TGraph.h>
 using namespace std;
 
 void Analysis::Loop()
@@ -335,8 +336,10 @@ void Analysis::Reconstruction_plot()
 void Analysis::Reconstruction_plot_KD()
 {
 		TCanvas *combined_canvas_KD;
-		combined_canvas_KD=	new TCanvas("cc","cc",1600,900);
+		combined_canvas_KD=	new TCanvas("cc","cc",1800,1000);
+		combined_canvas_KD->Divide(2,1);
 		//normalizacija na 1 (dobia kad san gugla normalizaciju histograma)
+		combined_canvas_KD->cd(1);
 		Signal_histo_KD->Scale(1/Signal_histo_KD->Integral());
 		Back_histo_KD->Scale(1/Back_histo_KD->Integral());
 		//crtanje kinematičkog diskriminatora za pozadinu i signal na istom platnu
@@ -354,7 +357,21 @@ void Analysis::Reconstruction_plot_KD()
 		disc_leg->AddEntry(Signal_histo_KD,"Fusion signal");
 		disc_leg->AddEntry(Back_histo_KD, "Background");
 		disc_leg->Draw();
+		
+		combined_canvas_KD->cd(2);
+		//kreiranje ROC krivulje
+		for( i=0;i<=99;i++)
+		{
+			x[i]=(Back_histo_KD->Integral(1,i+1));
+			y[i]=(Signal_histo_KD->Integral(1,i+1));
+			//gledamo sve događaje manje od 0.3 (to su binoi 0-0.1, 0.1-0.2 i 0.2-0.3 ili objedinjeno 0-0.3.....zato integral ide od 1(prvi bin) do 3 (treći bin)  
+		}
+		TGraph	*ROC_graph = new TGraph(100,x,y);
+		ROC_graph->GetXaxis()->SetTitle("Background acceptance");
+		ROC_graph->GetYaxis()->SetTitle("Fusion signal acceptance");
+		ROC_graph->Draw("AC*");
 		combined_canvas_KD->SaveAs("Higgs_mass_histo_KD.pdf");
+		
 }
 
 

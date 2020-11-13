@@ -1454,6 +1454,8 @@ public :
 	TH1F	*Back_histo, *Signal_histo; //HISTOGRRAMI SIGNALA I POZADINE REKONSTRUIRANOG HIGGSA
 	TH1F	*Signal_histo_KD, *Back_histo_KD;//histogrami signala i pozadine za kInematičku diskriminator
 	double kinematic_disc;//kinematički diskriminator
+	double x[1000],y[1000];
+	Int_t i;
 
 };
 
@@ -1465,8 +1467,8 @@ Analysis::Analysis() : fChain(0)
 	//histogrami koji se spajaju preko THStack MORAJU bit definirani u konstruktoru
 	Signal_histo=new TH1F("Signal","Signal",50,70,170);
 	Back_histo=new TH1F("Back","Back",50,70,170);
-	Signal_histo_KD=new TH1F("Kinematic discriminator","Kinematic discriminator",10,0,1);
-	Back_histo_KD=new TH1F("Back_KD","Back_KD",10,0,1);
+	Signal_histo_KD=new TH1F("Kinematic discriminator","Kinematic discriminator",100,0,1);
+	Back_histo_KD=new TH1F("Back_KD","Back_KD",100,0,1);
 }
 
 Analysis::~Analysis()
