@@ -13,6 +13,7 @@
 #include <TFile.h>
 #include<vector>
 #include <TH1F.h>
+#include<TH2F.h>
 #include<THStack.h>
 #include <iostream>
 
@@ -1456,6 +1457,7 @@ public :
 	double kinematic_disc;//kinematički diskriminator
 	double x[1000],y[1000];
 	Int_t i;
+	TH2F	*back2d_histo, *signal2d_histo;
 
 };
 
@@ -1467,8 +1469,11 @@ Analysis::Analysis() : fChain(0)
 	//histogrami koji se spajaju preko THStack MORAJU bit definirani u konstruktoru
 	Signal_histo=new TH1F("Signal","Signal",50,70,170);
 	Back_histo=new TH1F("Back","Back",50,70,170);
-	Signal_histo_KD=new TH1F("Kinematic discriminator","Kinematic discriminator",100,0,1);
-	Back_histo_KD=new TH1F("Back_KD","Back_KD",100,0,1);
+	Signal_histo_KD=new TH1F("Kinematic discriminator","Kinematic discriminator",10,0,1);
+	Back_histo_KD=new TH1F("Back_KD","Back_KD",10,0,1);
+	//fill 2D histograma dešava se u istom dijelu u kojem se fillaju prethofni histogrami
+	back2d_histo=new TH2F("Back 2D","",50,70,170,10,0,1);//broj binova x, raspon x, broj binova y, raspon y
+	signal2d_histo=new TH2F("Signal 2D","",50,70,170,10,0,1);
 }
 
 Analysis::~Analysis()

@@ -140,18 +140,21 @@ void Analysis::PlotHistogram(TString input_file)//funkcija prima root file iz ko
 		//crtanje histograma signala i pozadine (ovisno o učitanom fileu)
 		if(input_file=="/home/public/data/ggH125/ZZ4lAnalysis.root")
 		{
+			//Histogram rekonstruirane mase (signal)
 			Signal_histo->Fill(Higgs->M(),scal);//Ako su učitani podatci signala puni se ovaj histogram
-			//cout<<Higgs->M()<<endl;
-			//kinematička diskriminanta
+			//kinematički diskriminatora
 			kinematic_disc=1/(1+(1*p_QQB_BKG_MCFM)/p_GG_SIG_ghg2_1_ghz1_1_JHUGen);
+			//histogram kinematičkog diskriminatora (signal)
 			Signal_histo_KD->Fill(kinematic_disc);
+			//2D histogram
+			signal2d_histo->Fill(Higgs->M(),kinematic_disc);
 		}
-		if(input_file=="/home/public/data/qqZZ/ZZ4lAnalysis.root")
+		else //if(input_file=="/home/public/data/qqZZ/ZZ4lAnalysis.root")
 		{
 			Back_histo->Fill(Higgs->M(),scal);//ako su učitani pozadinski podatci puni se ovaj histogram
-			//kinematička diskriminanta
 			kinematic_disc=1/(1+(70*p_QQB_BKG_MCFM)/p_GG_SIG_ghg2_1_ghz1_1_JHUGen);
 			Back_histo_KD->Fill(kinematic_disc);
+			back2d_histo->Fill(Higgs->M(),kinematic_disc);
 			
 		}	
 	}
@@ -290,12 +293,13 @@ void Analysis::PlotHistogram(TString input_file)//funkcija prima root file iz ko
 //na taj način dobiju se div različite slike
 	if(input_file=="/home/public/data/ggH125/ZZ4lAnalysis.root")
 	{
-		lepton_canvas->SaveAs("Signal_histo.pdf");//signali raspada
+		lepton_canvas->SaveAs("Lepton_signal_histo.pdf");//signali raspada
 	}
-	if(input_file=="/home/public/data/qqZZ/ZZ4lAnalysiss.root")
+	else//else jer iz nekog razloga if zašteka
 	{
-		lepton_canvas->SaveAs("Back_histo.pdf");//pozadina raspada
+		lepton_canvas->SaveAs("Lepton_back_histo.pdf");//pozadina raspada
 	}
+	delete lepton_canvas;
 }
 
 /*#######################################################
@@ -337,7 +341,7 @@ void Analysis::Reconstruction_plot_KD()
 {
 		TCanvas *combined_canvas_KD;
 		combined_canvas_KD=	new TCanvas("cc","cc",1800,1000);
-		combined_canvas_KD->Divide(2,1);
+		combined_canvas_KD->Divide(2,2);
 		//normalizacija na 1 (dobia kad san gugla normalizaciju histograma)
 		combined_canvas_KD->cd(1);
 		Signal_histo_KD->Scale(1/Signal_histo_KD->Integral());
@@ -359,18 +363,28 @@ void Analysis::Reconstruction_plot_KD()
 		disc_leg->Draw();
 		
 		combined_canvas_KD->cd(2);
-		//kreiranje ROC krivulje
-		for( i=0;i<=99;i++)
+		/*###########################
+		#	kreiranje ROC krivulje  #
+		###########################*/
+		for( i=1;i<=10;i++)
 		{
-			x[i]=(Back_histo_KD->Integral(1,i+1));
-			y[i]=(Signal_histo_KD->Integral(1,i+1));
+			y[i]=(Back_histo_KD->Integral(i,1));
+			x[i]=(Signal_histo_KD->Integral(i,1));
 			//gledamo sve događaje manje od 0.3 (to su binoi 0-0.1, 0.1-0.2 i 0.2-0.3 ili objedinjeno 0-0.3.....zato integral ide od 1(prvi bin) do 3 (treći bin)  
 		}
-		TGraph	*ROC_graph = new TGraph(100,x,y);
-		ROC_graph->GetXaxis()->SetTitle("Background acceptance");
-		ROC_graph->GetYaxis()->SetTitle("Fusion signal acceptance");
+		TGraph	*ROC_graph = new TGraph(10,x,y);
+		ROC_graph->GetYaxis()->SetTitle("Background acceptance");
+		ROC_graph->GetXaxis()->SetTitle("Fusion signal acceptance");
 		ROC_graph->Draw("AC*");
+		
+		combined_canvas_KD->cd(3);
+		signal2d_histo->Draw("colz");
+		
+		combined_canvas_KD->cd(4);
+		back2d_histo->Draw("colz");
+		
 		combined_canvas_KD->SaveAs("Higgs_mass_histo_KD.pdf");
+		
 		
 }
 
