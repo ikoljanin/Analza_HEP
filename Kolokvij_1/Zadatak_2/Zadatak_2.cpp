@@ -85,30 +85,26 @@ void Zadatak_2::plot_histogram()
 	//lijevi dio platna
 	canvas_1->cd(1);
 	gPad->SetLeftMargin(0.18);
-	gPad->SetRightMargin(0.20);
-	gPad->SetBottomMargin(0.18);
+	gPad->SetBottomMargin(0.20);
 	ele_pt_histo->Draw("HISTO");
 	ele_pt_histo->GetXaxis()->SetTitle("Electron p_{T} [GeV]");
 	ele_pt_histo->GetXaxis()->SetLabelSize(0.04);
 	ele_pt_histo->GetYaxis()->SetTitle("Number of events /5GeV");
-	ele_pt_histo->GetXaxis()->SetTitleOffset(1.2);
 	ele_pt_histo->GetYaxis()->SetLabelSize(0.04);
-	ele_pt_histo->SetTitle("Electron transversal momentum");
+	//ele_pt_histo->SetTitle("Electron transversal momentum");
 	ele_pt_histo->SetTitleFont(44);
 	ele_pt_histo->SetLineColor(kRed);
 	
 	//desni dio
 	canvas_1->cd(2);
-	gPad->SetLeftMargin(0.18);
 	gPad->SetRightMargin(0.20);
-	gPad->SetBottomMargin(0.18);
+	gPad->SetBottomMargin(0.20);
 	electron_2D_histo->Draw("colz");
 	electron_2D_histo->SetMinimum(-0.01);
 	electron_2D_histo->SetStats(0);
 	electron_2D_histo->SetTitle("Electron p_{T} - Electron eta");
 	electron_2D_histo->SetTitleFont(44);
 	electron_2D_histo->GetXaxis()->SetTitle("p_{T} [GeV]");
-	electron_2D_histo->GetXaxis()->SetTitleOffset(1.2);
 	electron_2D_histo->GetYaxis()->SetTitle("Eta [rad]");
 	
 	canvas_1->SaveAs("ElectronTraining.pdf");
