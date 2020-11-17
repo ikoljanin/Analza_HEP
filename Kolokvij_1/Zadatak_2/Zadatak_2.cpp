@@ -53,7 +53,7 @@ void Zadatak_2::plot_histogram()
 	//Histograv za A
 	TH1F *ele_pt_histo;
 	
-	ele_pt_histo=new TH1F("ele_pt","Electron transversal momentum",30,0,150);//bin 5 GeV
+	ele_pt_histo=new TH1F("ele_pt","",30,0,150);//bin 5 GeV
 	electron_2D_histo=new TH2F("PT vs SCAL","",30,0,150,80,-3,3);
 	if (fChain == 0) 
 	 {
@@ -85,20 +85,21 @@ void Zadatak_2::plot_histogram()
 	//lijevi dio platna
 	canvas_1->cd(1);
 	gPad->SetLeftMargin(0.18);
-	gPad->SetBottomMargin(0.20);
+	//gPad->SetBottomMargin(0.20);
 	ele_pt_histo->Draw("HISTO");
-	ele_pt_histo->GetXaxis()->SetTitle("Electron p_{T} [GeV]");
-	ele_pt_histo->GetXaxis()->SetLabelSize(0.04);
 	ele_pt_histo->GetYaxis()->SetTitle("Number of events /5GeV");
 	ele_pt_histo->GetYaxis()->SetLabelSize(0.04);
-	//ele_pt_histo->SetTitle("Electron transversal momentum");
+	ele_pt_histo->GetXaxis()->SetTitle("Electron p_{T} [GeV]");
+	ele_pt_histo->GetXaxis()->SetLabelSize(0.04);
+	
+	ele_pt_histo->SetTitle("Electron transversal momentum");
 	ele_pt_histo->SetTitleFont(44);
 	ele_pt_histo->SetLineColor(kRed);
 	
 	//desni dio
 	canvas_1->cd(2);
 	gPad->SetRightMargin(0.20);
-	gPad->SetBottomMargin(0.20);
+	//gPad->SetBottomMargin(0.20);
 	electron_2D_histo->Draw("colz");
 	electron_2D_histo->SetMinimum(-0.01);
 	electron_2D_histo->SetStats(0);
