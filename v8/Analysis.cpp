@@ -53,6 +53,8 @@ void Analysis::PlotHistogram(TString input_file)//funkcija prima root file iz ko
 		{
 			break;
 		}
+		/*if(jentry>10000)
+			break;*/
 		nb = fChain->GetEntry(jentry); 
 		nbytes += nb;
 		//Težina za svaki događaj
@@ -79,98 +81,6 @@ void Analysis::PlotHistogram(TString input_file)//funkcija prima root file iz ko
 			Back_histo->Fill(Higgs->M(),scal);//ako su učitani pozadinski podatci puni se ovaj histogram
 		}	
 	}	
-}
-
-/*#######################################################
-#	FUNKCIJA KOJA STACKA HISTO ZA POZADINU I SIGNAL	#
-#######################################################*/
-
-void Analysis::Reconstruction_plot()
-{
-		
-		TCanvas *combined_canvas;
-		combined_canvas	=	new TCanvas("c_c","c_c",1600,900);
-		//konstruktor za spajanje histograma pozadine i siganala rekonstrukcije
-		THStack *Higgs_Histo	=	new THStack();
-		//dodavanje histograma za addanje
-		Higgs_Histo->Add(Back_histo);
-		Higgs_Histo->Add(Signal_histo);
-		
-		Higgs_Histo->Draw("HISTO");
-		
-		Signal_histo->SetLineColor(kRed);
-		Back_histo->SetLineColor(kBlue);
-		//setiranje legende i osi
-		Higgs_Histo->GetXaxis()->SetTitle("mass / GeV");
-		Higgs_Histo->GetYaxis()->SetTitle("Events/2 GeV");
-		TLegend *Higgs_legend = new TLegend(0.9,0.7,0.5,0.9);  //x1,y1,x2,y2 are the coordinates of the Legend
-		Higgs_legend->SetHeader("Reconstructed Higgs bosons", "C"); //C for centering
-		Higgs_legend->AddEntry(Signal_histo,"Fusion signal ");
-		Higgs_legend->AddEntry(Back_histo, "Background");
-		Higgs_legend->Draw();
-		combined_canvas->SaveAs("Higgs_mass_histo.pdf");
-	
-		
-}
-
-/*##############################################
-# F-JA ZA PLOTANJE KINEMATIČKOG DISKRIMINATORA #
-###############################################*/
-void Analysis::Reconstruction_plot_KD()
-{
-		TCanvas *combined_canvas_KD;
-		combined_canvas_KD=	new TCanvas("cc","cc",1800,1000);
-		combined_canvas_KD->Divide(2,2);
-		//normalizacija na 1 (dobia kad san gugla normalizaciju histograma)
-		combined_canvas_KD->cd(1);
-		Signal_histo_KD->Scale(1/Signal_histo_KD->Integral());
-		Back_histo_KD->Scale(1/Back_histo_KD->Integral());
-		//crtanje kinematičkog diskriminatora za pozadinu i signal na istom platnu
-		Signal_histo_KD->Draw("HISTO");
-		Back_histo_KD->Draw("HISTO SAME");
-		//
-		Signal_histo_KD->SetLineColor(kRed);
-		Signal_histo_KD->SetLineWidth(1.5);
-		Back_histo->SetLineColor(kBlue);
-		Back_histo_KD->SetLineWidth(1.5);
-		//setiranje legende i osi
-		Signal_histo_KD->GetXaxis()->SetTitle("Discrimin");
-		Signal_histo_KD->GetYaxis()->SetTitle("Events/0.1");
-		TLegend *disc_leg = new TLegend(0.4,0.8,0.6,0.9);  //x1,y1,x2,y2 are the coordinates of the Legend
-		disc_leg->AddEntry(Signal_histo_KD,"Fusion signal");
-		disc_leg->AddEntry(Back_histo_KD, "Background");
-		disc_leg->Draw();
-		
-		combined_canvas_KD->cd(2);
-		/*###########################
-		#	kreiranje ROC krivulje  #
-		###########################*/
-		TGraph	*ROC_graph = new TGraph();
-		/*for( i=1;i<=10;i++)
-		{MOJ NAČIN NE VALJA
-			x[i]=(Back_histo_KD->Integral(i,1));
-			y[i]=(Signal_histo_KD->Integral(i,1));
-			//gledamo sve događaje manje od 0.3 (to su binoi 0-0.1, 0.1-0.2 i 0.2-0.3 ili objedinjeno 0-0.3.....zato integral ide od 1(prvi bin) do 3 (treći bin)  
-		}*/
-		for(int i=1;i<=10;i++)
-		{
-			x[i]=1-Back_histo_KD->Integral(1,i);
-			y[i]=1-Signal_histo_KD->Integral(1,i);
-			ROC_graph->SetPoint(int(i),x[i],y[i]);
-		}
-		ROC_graph->SetMinimum(0.95);
-		ROC_graph->SetMaximum(1.0);
-		ROC_graph->GetXaxis()->SetTitle("Background efficiency");
-		ROC_graph->GetYaxis()->SetTitle("Signal efficiency");
-		ROC_graph->Draw("ap");
-		
-		combined_canvas_KD->cd(3);
-		signal2d_histo->Draw("colz");
-		
-		combined_canvas_KD->cd(4);
-		back2d_histo->Draw("colz");
-		
-		combined_canvas_KD->SaveAs("Higgs_mass_histo_KD.pdf");	
 }
 
 /*###########################################################
@@ -227,10 +137,12 @@ void Analysis::BW_AND_Q_FIT()
 	//zbrajanje histograma signala i pozadine  na željenom području 
 	back_and_signal_histo->Add(Signal_histo);
 	back_and_signal_histo->Add(Back_histo);
+	//back_and_signal_histo->Scale(1/back_and_signal_histo->Integral());
 	//fit modela na zbroj histograma pozadine i signala
 	back_and_signal_histo->Fit(BW_AND_Q);
 	back_and_signal_histo->SetTitle("BW+Q fit");
-	back_and_signal_histo->GetXaxis()->SetTitle("Mass / GeV");
+	back_and_signal_histo->GetXaxis()->SetTitle("Mass [GeV]");
+	back_and_signal_histo->GetYaxis()->SetTitle("Events / 2GeV");
 	back_and_signal_histo->Draw("PE1X0");
 	
 	BW_Q_canvas->SaveAs("BW_Q_FIT_110_150GeV.pdf");
@@ -286,10 +198,12 @@ void Analysis::All_area_ML_fit()
 	
 	back_and_signal_histo_ML->Add(Signal_histo);
 	back_and_signal_histo_ML->Add(Back_histo);
+	//back_and_signal_histo_ML->Scale(1/back_and_signal_histo_ML->Integral());
 	//fit modela na zbroj histograma pozadine i signala
-	back_and_signal_histo_ML->Fit(BW_AND_Q_ml,"L");//L naznači da se fit radi po max lik. metodi
+	back_and_signal_histo_ML->Fit(BW_AND_Q_ml,"l");//L naznači da se fit radi po max lik. metodi
 	back_and_signal_histo_ML->SetTitle("BW+Q fit");
-	back_and_signal_histo_ML->GetXaxis()->SetTitle("Mass / GeV");
+	back_and_signal_histo_ML->GetXaxis()->SetTitle("Mass [GeV]");
+	back_and_signal_histo_ML->GetYaxis()->SetTitle("Events 2 GeV");
 	back_and_signal_histo_ML->Draw("PE1X0");
 	
 	ml_canvas->SaveAs("BW_Q_FIT_70_170GeV.pdf");	

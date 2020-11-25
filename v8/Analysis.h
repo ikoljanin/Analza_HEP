@@ -1441,20 +1441,16 @@ public :
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
-   virtual void Reconstruction_plot();//funkcija za rekonstrukciju higgsa
    virtual void  Init(TTree *tree);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
    virtual void PlotHistogram(TString input_file);//funkcija prima string
-   virtual void Reconstruction_plot_KD();//funkcija koja plota historam kinematičkog diskriminatora
    virtual void BW_AND_Q_FIT();
    virtual void All_area_ML_fit();
    
    public:
 		TH1F *counter;
 		TTree *tree;
-		TH1F	*Signal_histo_KD, *Back_histo_KD;//histogrami signala i pozadine za kInematičku diskriminator
-		TH2F	*back2d_histo, *signal2d_histo;
 		TH1F	*Back_histo, *Signal_histo; //HISTOGRRAMI SIGNALA I POZADINE REKONSTRUIRANOG HIGGSA
 		double kinematic_disc;//kinematički diskriminator
 		double x[1000],y[1000];
@@ -1467,16 +1463,9 @@ public :
 Analysis::Analysis() : fChain(0) 
 {
 	//histogrami koji se spajaju preko THStack MORAJU bit definirani u konstruktoru
+	//širina bina=(početak-kraj)/broj binova ...(140-0)/50
 	Signal_histo=new TH1F("Signal","Signal",50,70,170);
 	Back_histo=new TH1F("Back","Back",50,70,170);
-	
-	//histogrami koji se spajaju preko THStack MORAJU bit definirani u konstruktoru
-	Signal_histo_KD=new TH1F("Kinematic discriminator","Kinematic discriminator",10,0,1);
-	Back_histo_KD=new TH1F("Back_KD","Back_KD",10,0,1);
-	//fill 2D histograma dešava se u istom dijelu u kojem se fillaju prethofni histogrami
-	back2d_histo=new TH2F("Back 2D","",50,70,170,10,0,1);//broj binova x, raspon x, broj binova y, raspon y
-	signal2d_histo=new TH2F("Signal 2D","",50,70,170,10,0,1);
-	
 }
 
 Analysis::~Analysis()
