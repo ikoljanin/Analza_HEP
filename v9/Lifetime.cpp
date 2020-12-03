@@ -9,7 +9,8 @@ void Lifetime::Loop()
 {
 	double t_sum=time_sum();
 	//f-ja time_sum vraća optimalan broj binova 
-	t_histo=new TH1F("Time","Time",tau_bin(),0,10);
+	int bin_n=tau_bin();
+	t_histo=new TH1F("Time","Time",bin_n,0,10);//f-ja tau_bin dat će optimalan broj binova
 	
 	TCanvas *t_canvas;
 	t_canvas= new TCanvas("t_canvas","t_canvas",1600,900);
@@ -45,13 +46,13 @@ void Lifetime::Loop()
       t_histo->Fill(t);
    }
    double sum_t=time_sum();
-   cout<<"Analiticki odredena vrijednost vremena poluzivota je   "<<sum_t/nentries<<endl;
+   cout<<"Analiticki odredena vrijednost vremena poluzivota je "<<sum_t/nentries<<"  , a  optimalan broj binova iznosi "<<bin_n<<endl;
    t_canvas->cd(1);
    gPad->SetLeftMargin(0.18);
    t_histo->Fit(t_fit,"l");
    t_histo->SetTitle("Measured lifetime fit");
    t_histo->GetXaxis()->SetTitle("t [s]");
-   t_histo->GetYaxis()->SetTitle("Events / 0.35 GeV");
+   t_histo->GetYaxis()->SetTitle("Events / 0.28 s");
    t_histo->Draw();
    //pogreška za ovu metodu dobivena je u "1.sigma.pdf"
    //sigma_1=sqrt(1/(N/tau*tau-2*suma_t/tau*tau*tau));
@@ -61,8 +62,8 @@ void Lifetime::Loop()
    gPad->SetLeftMargin(0.18);
    //za t uvrštavamo jednu jedinu vrijednost t=1s u funkciju t_fit; ostalo je sve isto
    t_fit_one=new TF1("BW","[0]*(1/x)*exp(-[1]/x)",0,10);//parametar funkcije je tau (zato  pišemo x u nazivniku)
-   t_fit_one->SetParameter(0,2.86160e+02);
-   t_fit_one->SetParameter(1,1.22850e+00);
+   t_fit_one->SetParameter(0,t_fit->GetParameter(0));
+   t_fit_one->SetParameter(1,t_fit->GetParameter(1));
    t_fit_one->SetTitle("Likelihood function for one measured time t=1s");
    t_fit_one->GetXaxis()->SetTitle("#tau [s]");
    t_fit_one->GetYaxis()->SetTitle("L(1,#tau)");
@@ -138,7 +139,7 @@ int Lifetime::tau_bin()
 			//najmanja razlika analitički određenog tau i tau iz fita0>najpovoljniji broj binova
 			diff=abs(tau_fit->GetParameter(1)-SUMA/nentries);
 			cout<<diff<<endl;
-			opt_bin=bin_number;
+			opt_bin=bin_number;//optimalan broj binova dobije se za najmanju raziku računalnog i analitičkog rješenja
 		}
 			//popunjavanje grafa  (element klase TGraph) željenim vrijednostima
 		tau_bin_graph->SetPoint(bin_number,bin_number,tau_fit->GetParameter(1));		
