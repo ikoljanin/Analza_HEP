@@ -55,7 +55,7 @@ public :
 	TH1F *t_histo;
 	TF1 *t_fit, *t_fit_one,*lnL, *tau_fit;
 	double N;
-	double sigma_1,sigma_2,sigma_3;
+	double sigma_1,sigma_2,sigma_3,sigma_1_fit;
 	double tau_min,tau_max;
 	int bin_number;
 };

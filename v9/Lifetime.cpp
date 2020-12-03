@@ -15,9 +15,6 @@ void Lifetime::Loop()
 	TCanvas *t_canvas;
 	t_canvas= new TCanvas("t_canvas","t_canvas",1600,900);
 	
-	double tau=1.22850e+00;
-	double A=2.86160e+02;
-	
 	t_canvas->Divide(3,1);
 	gStyle->SetOptFit(1111);
 	t_fit=new TF1("BW","[0]*(1/[1]*exp(-x/[1]))",0,10);//parametar 0 je tau (vrime poluživota)
@@ -54,8 +51,11 @@ void Lifetime::Loop()
    t_histo->GetXaxis()->SetTitle("t [s]");
    t_histo->GetYaxis()->SetTitle("Events / 0.28 s");
    t_histo->Draw();
-   //pogreška za ovu metodu dobivena je u "1.sigma.pdf"
-   //sigma_1=sqrt(1/(N/tau*tau-2*suma_t/tau*tau*tau));
+   //pogreška za ovu metodu dobivena je dvostrukim deriviranjem lnL
+   sigma_1= sqrt(-pow(t_fit->GetParameter(1),3)/(nentries*t_fit->GetParameter(1) - 2*sum_t));
+   //određivanje pogreške direktno iz roota
+   sigma_1_fit=t_fit->GetParError(1);
+   cout<<"Analiticka pogreska iznosi \t"<<sigma_1<<", a izracunata pogreska iznosi \t"<<sigma_1_fit<<endl;
    
    //za t=1s (jedno mjerenje)
    t_canvas->cd(2);
@@ -70,8 +70,6 @@ void Lifetime::Loop()
    //maksimum funkcije
    tau_max=t_fit_one->GetMaximumX();
    t_fit_one->Draw();
-   //pogreška za ovu metodu dobivena je u "2.sigma.pdf"
-    //sigma_2=sqrt(tau*tau*tau/(tau-1));
 	
 	//-2lnL
 	t_canvas->cd(3);
@@ -85,9 +83,10 @@ void Lifetime::Loop()
 	//minimum funkcije
 	tau_min=lnL->GetMinimumX();
 	lnL->Draw();
-	//pogreška za ovu metodu dobivena je u "3.sigma.pdf"
+	//pogreška za ovu metodu dobivena je kao preskej pravca -2lnL(tau_min)+1 s krivuljom -2lnL; asimetrična greška
 
    t_canvas->SaveAs("Time histo.pdf");	
+   //cout<<Pogreška
   
 }
 
