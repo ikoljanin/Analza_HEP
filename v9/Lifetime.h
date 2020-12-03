@@ -49,11 +49,12 @@ public :
    virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-   virtual void tau_bin();
+   virtual int tau_bin();
+	virtual double time_sum();
    public :
 	TH1F *t_histo;
 	TF1 *t_fit, *t_fit_one,*lnL, *tau_fit;
-	double suma_t=0.0,N;
+	double N;
 	double sigma_1,sigma_2,sigma_3;
 	double tau_min,tau_max;
 	int bin_number;

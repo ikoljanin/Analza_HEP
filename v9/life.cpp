@@ -6,6 +6,6 @@ int main()
     Lifetime *A;
 	A=new Lifetime();
 	A->Loop();
-	//A->tau_bin();
+	
     return 0;
 }
