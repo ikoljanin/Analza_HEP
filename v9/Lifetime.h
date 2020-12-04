@@ -56,7 +56,7 @@ public :
 	TF1 *t_fit, *t_fit_one,*lnL, *tau_fit;
 	double N;
 	double sigma_1,sigma_2,sigma_3,sigma_1_fit;
-	double tau_min,tau_max;
+	double tau_min,tau_max,y_tau_min;
 	int bin_number;
 };
 

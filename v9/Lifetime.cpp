@@ -52,10 +52,8 @@ void Lifetime::Loop()
    t_histo->GetYaxis()->SetTitle("Events / 0.28 s");
    t_histo->Draw();
    //pogreška za ovu metodu dobivena je dvostrukim deriviranjem lnL
-   sigma_1= sqrt(-pow(t_fit->GetParameter(1),3)/(nentries*t_fit->GetParameter(1) - 2*sum_t));
-   //određivanje pogreške direktno iz roota
-   sigma_1_fit=t_fit->GetParError(1);
-   cout<<"Analiticka pogreska iznosi \t"<<sigma_1<<", a izracunata pogreska iznosi \t"<<sigma_1_fit<<endl;
+   sigma_1= sqrt(-pow(t_fit->GetParameter(1),3)/(nentries*t_fit->GetParameter(1) - 2*sum_t));//analitička pogreška
+   sigma_1_fit=t_fit->GetParError(1);//određivanje pogreške direktno iz roota
    
    //za t=1s (jedno mjerenje)
    t_canvas->cd(2);
@@ -82,11 +80,15 @@ void Lifetime::Loop()
 	lnL->GetYaxis()->SetTitle("-2lnL");
 	//minimum funkcije
 	tau_min=lnL->GetMinimumX();
+	y_tau_min=lnL->GetMinimum();//funkcijska vrijednost za tau_min=x
 	lnL->Draw();
-	//pogreška za ovu metodu dobivena je kao preskej pravca -2lnL(tau_min)+1 s krivuljom -2lnL; asimetrična greška
-
-   t_canvas->SaveAs("Time histo.pdf");	
-   //cout<<Pogreška
+	//pogreška za ovu metodu dobivena je kao preskej pravca -2lnL(tau_min)+1 s krivuljom -2lnL; zato je asimetrična greška (liva sigma_2; desna sigma_3)
+	sigma_2=tau_min-lnL->GetX(y_tau_min+1,1,tau_min);
+	//lnL->GetX(y_tau_min+1,0,tau_min); izbaci x za funkcijsku vrijednost y_tau_min+1, ali livo (presjek pravca y=y_tau_min+1 i krivulje -2lnL, livo od tau_min
+	sigma_3=lnL->GetX(y_tau_min+1,tau_min,2)-tau_min;
+	cout<<"Analiticka pogreska iznosi \t"<<sigma_1<<", a pogreska određena iz fita Max likelihood iznosi \t"<<sigma_1_fit<<", lijeva pogreska iz -2lnL -"<<sigma_2<<" desna pogreska iz -2lnL +"<<sigma_3<<endl;
+	t_canvas->SaveAs("Time histo.pdf");	
+	//cout<<Pogreška
   
 }
 
