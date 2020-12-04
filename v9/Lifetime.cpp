@@ -86,6 +86,7 @@ void Lifetime::Loop()
 	sigma_2=tau_min-lnL->GetX(y_tau_min+1,1,tau_min);
 	//lnL->GetX(y_tau_min+1,0,tau_min); izbaci x za funkcijsku vrijednost y_tau_min+1, ali livo (presjek pravca y=y_tau_min+1 i krivulje -2lnL, livo od tau_min
 	sigma_3=lnL->GetX(y_tau_min+1,tau_min,2)-tau_min;
+	cout<<"Optimalan broj binova je \t"<<bin_n<<endl;
 	cout<<"Analiticka pogreska iznosi \t"<<sigma_1<<", a pogreska određena iz fita Max likelihood iznosi \t"<<sigma_1_fit<<", lijeva pogreska iz -2lnL -"<<sigma_2<<" desna pogreska iz -2lnL +"<<sigma_3<<endl;
 	t_canvas->SaveAs("Time histo.pdf");	
 	//cout<<Pogreška
@@ -145,7 +146,7 @@ int Lifetime::tau_bin()
 			//popunjavanje grafa  (element klase TGraph) željenim vrijednostima
 		tau_bin_graph->SetPoint(bin_number,bin_number,tau_fit->GetParameter(1));		
 	}
-	//cout<<"Optimalan broj binova je \t"<<opt_bin<<endl;
+	
 	tau_bin_graph->SetMinimum(1.2);
 	tau_bin_graph->SetMaximum(1.24);
 	tau_bin_graph->SetTitle("#tau number of bins dependence");
