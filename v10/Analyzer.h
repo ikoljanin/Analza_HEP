@@ -9,10 +9,8 @@
 #include <TCanvas.h>
 #include <TString.h>
 #include <TLegend.h>
-#include <TLorentzVector.h>
 #include <THStack.h>
 #include <TGraph.h>
-#include <TH2F.h>
 #include <TF1.h>
 #include <TStyle.h>
 #include <TLatex.h>
@@ -20,6 +18,7 @@
 #include <TFrame.h>
 #include <TGraphErrors.h>
 #include <TLine.h>
+#include <TLatex.h>
 using namespace std;
 // create a class
 class Analyzer

@@ -60,7 +60,7 @@ void Analyzer::Least_Squares()
 	
 	TF1 *least_square;
 	//m=1/theta; f(x,theta)=a=F/m; u kodu theta=x=?
-	least_square=new TF1("Least_Squares","pow(([0]-[1]*x)/[2],2)+pow(([3]-[4]*x)/[5],2)+pow(([6]-[7]*x)/[8],2)+pow(([9]-[10]*x)/[11],2)+pow(([12]-[13]*x)/[14],2)",9.5,11);
+	least_square=new TF1("Least_Squares","pow(([0]-[1]*x)/[2],2)+pow(([3]-[4]*x)/[5],2)+pow(([6]-[7]*x)/[8],2)+pow(([9]-[10]*x)/[11],2)+pow(([12]-[13]*x)/[14],2)",9.8,10.8);
 	//definicija parametara 
 	for(int i=0;i<15;i=i+3)
 	{
@@ -98,31 +98,46 @@ void Analyzer::Least_Squares()
 	
 	//linije koje označavaju theta, rheta-sgima i theta+sigma
 	TLine *line1,*line2,*line3,*line4;
-	line1=new TLine(theta_min-sigma_l,least_square->Eval(theta_min)+1,theta_min+sigma_r,least_square->Eval(theta_min)+1);
+	//oznake postavljenih linija
+	TLatex *t1,*t2,*t3 ;
+	
+	line1=new TLine(theta_min-sigma_l,2.1,theta_min-sigma_l,least_square->Eval(theta_min)+1);
 	line1->SetLineColor(kBlack);
 	line1->SetLineStyle(kDashed);
-	//TText *t = new TText(9.8,1.6,"#theta - #sigma");
-	//t->SetTextSize(0.05);
-	//t->Draw();
+	//postavljanje oznake na prvu liniju
+	t1=new TLatex(theta_min-sigma_l+0.05,2.4,"#hat{#theta}-#sigma");
+	t1->SetTextAngle(90);
+	t1->SetTextColor(1);
+	t1->SetTextSize(0.03);
+	t1->Draw();
 	line1->Draw();
 	
-	line2=new TLine(theta_min-sigma_l,2,theta_min-sigma_l,least_square->Eval(theta_min)+1);
+	line2=new TLine(theta_min-sigma_l,least_square->Eval(theta_min)+1,theta_min+sigma_r,least_square->Eval(theta_min)+1);
 	line2->SetLineColor(kBlack);
 	line2->SetLineStyle(kDashed);
 	line2->Draw();
 	
-	line3=new TLine(theta_min+sigma_r,2,theta_min+sigma_r,least_square->Eval(theta_min)+1);
+	line3=new TLine(theta_min+sigma_r,2.1,theta_min+sigma_r,least_square->Eval(theta_min)+1);
 	line3->SetLineColor(kBlack);
 	line3->SetLineStyle(kDashed);
+	//postavljanje oznake na desnu liniju
+	t2=new TLatex(theta_min+sigma_l-0.03,2.4,"#hat{#theta}+#sigma");
+	t2->SetTextAngle(90);
+	t2->SetTextColor(1);
+	t2->SetTextSize(0.03);
+	t2->Draw();
 	line3->Draw();
 	
-	line3=new TLine(theta_min,2,theta_min,least_square->Eval(theta_min));
-	line3->SetLineColor(kBlack);
-	line3->SetLineStyle(kDashed);
-	line3->Draw();
+	line4=new TLine(theta_min,2.1,theta_min,least_square->Eval(theta_min)+0.05);
+	line4->SetLineColor(kBlack);
+	line4->SetLineStyle(kDashed);
+	//postavljanje oznake na srednju liniju
+	t3=new TLatex(theta_min-0.01,2.2,"#hat{#theta}");
+	t3->SetTextColor(1);
+	t3->SetTextSize(0.03);
+	t3->Draw();
+	line4->Draw();
 	
-	
-
 	canvas->SaveAs("Least_Squares.pdf");
 }
 
