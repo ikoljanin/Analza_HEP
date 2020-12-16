@@ -34,4 +34,5 @@ class Analyzer
     double Bin_Distr(int input_r,double input_p,int input_N);
 	double pu_cp(int input_r,int input_N,double C);//gornja granica
 	double pl_cp(int input_r,int input_N,double C);//donja granica
+	void CP_for10(int input_N,double C);//funkcija koja računa conf int za 10 događaja
 };
