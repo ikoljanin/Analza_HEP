@@ -100,8 +100,6 @@ double Analyzer::lower_limit_cp(int input_r,int input_N,double C)
 void Analyzer::CP_for10(int input_N,double C)
 {
 	double upper_p,lower_p;
-	//A->Bin_Distr(2,0.2,8);
-	
 	//CP interval za 10 događaja
 	for(int r=0;r<=input_N;r++)//petlja određuje broj očekivano izvršenih događaja od 10 mogućnosti
 	{
@@ -121,15 +119,15 @@ void Analyzer::dice_throw(double C)//rima conf. limit ovisno je li jedan ili dva
 	for(int j=0;j<1000;j++)//željei eksperiment 10 bacanja kockice ponavlja se 1000 puta
 	{
 		int result,counter=0;
-		for(int i=0;i<10;i++)//deset bacanja kockice
+		for(int i=0;i<10;i++)//deset bacanja kockice za svaki j-ti eksperiment
 		{
-			result=rand()%6+1;//generira random broj od 1 do 6...rand()%6 daje ostatke pri djeljenju sa 6 (0,1,2,3,4,5) pa zto +1
+			result=rand()%6+1;//generira random broj od 1 do 6...rand()%6 daje ostatke pri djeljenju sa 6 (0,1,2,3,4,5) pa zato +1...skripta UTB
 			if(result==6)
 			{
-				counter++;//broji povoljne događaje u 10 eksperimentalnih događaja...to je zapravo r
+				counter++;//broji povoljne događaje u 10 bacanja kockice za svaki j-t eksperiment... counter = r
 			}
 		}
-		upper_limit=upper_limit_cp(counter,10,C);
+		upper_limit=upper_limit_cp(counter,10,C);//određuje p+ za r=counter okretanja broja 6 u 10 bacanja s vjerojatnošću 1 sigma
 		lower_limit=lower_limit_cp(counter,10,C);
 		//p_true je 1/6...to je prava vjerojatnost za reazizaciju broja broja 6
 		if(upper_limit>=1/6 && lower_limit<=1/6)//1/6 je između p- i p+
@@ -137,10 +135,36 @@ void Analyzer::dice_throw(double C)//rima conf. limit ovisno je li jedan ili dva
 			pokrivenost++;//u koliko od 1000 eksperimenata je 1/6 u conf. intervalu
 		}
 	}
-	cout<<pokrivenost<<endl;
-	
-	
+	cout<<pokrivenost<<endl;	
 }
 
+//funkcija za crtanje CP pojasa
+void Analyzer::Draw_cp_zone(int input_N,double C)
+{
+	TCanvas *canvas;
+	gStyle->SetOptStat(0000);
+	canvas= new TCanvas("c1","c1",1600,900);
+	
+	THStack *CPzone = new THStack("CPzone","CPzone");
+	
+	TH1F *limit_up_histo,*limit_down_histo;
+	limit_up_histo=new TH1F("Upper limit","Upper limit",input_N,0,input_N);//broj binova,početak, kraj
+	limit_down_histo=new TH1F("CPZone","CPZone",input_N,0,input_N);
+	
+	for(int i=0;i<=input_N;i++)//prolazimo kroz sve moguće brojeve realizacija za 10 događaja i punimo histograme
+	{
+		limit_up_histo->SetBinContent(i,upper_limit_cp(i,input_N,C));// ne radi ovako....Fill(upper_limit_cp(i,input_N,C)); google kaže za egzaktne SetBinContent
+		limit_down_histo->SetBinContent(i,lower_limit_cp(i,input_N,C));	
+	}
+	limit_down_histo->SetMaximum(1.0);
+	limit_down_histo->SetMinimum(0.0);
+	limit_up_histo->SetMaximum(1.0);
+	limit_up_histo->SetMinimum(0.0); 
+	limit_down_histo->GetXaxis()->SetTitle("N");
+	limit_down_histo->GetYaxis()->SetTitle("p");
+	limit_down_histo->Draw();
+	limit_up_histo->Draw("same");
+	canvas->SaveAs("CPZone.pdf");
+}
 
 

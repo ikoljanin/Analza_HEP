@@ -36,5 +36,6 @@ class Analyzer
 	double upper_limit_cp(int input_r,int input_N,double C);//gornja granica
 	double lower_limit_cp(int input_r,int input_N,double C);//donja granica
 	void CP_for10(int input_N,double C);//funkcija koja računa conf int za 10 događaja
-	void dice_throw(double C);
+	void dice_throw(double C);//funkcija za bacanje kockice
+	void Draw_cp_zone(int input_N,double C);
 };
