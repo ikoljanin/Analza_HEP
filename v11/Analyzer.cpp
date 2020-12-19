@@ -139,30 +139,98 @@ void Analyzer::dice_throw(double C)//rima conf. limit ovisno je li jedan ili dva
 }
 
 //funkcija za crtanje CP pojasa
-void Analyzer::Draw_cp_zone(int input_N,double C)
+void Analyzer::Draw_cp_zone(int input_r,int input_N,double C)
 {
+	double a1,a2;//tu čisto da se ne poziva funkcija upper_limit_cp i lower_limit_cp nego jednom (dole u petlji)
 	TCanvas *canvas;
 	gStyle->SetOptStat(0000);
 	canvas= new TCanvas("c1","c1",1600,900);
 	
-	THStack *CPzone = new THStack("CPzone","CPzone");
+	/*
+	line1=new TLine(theta_min-sigma_l,2.1,theta_min-sigma_l,least_square->Eval(theta_min)+1);
+	line1->SetLineColor(kBlack);
+	line1->SetLineStyle(kDashed);
+	//postavljanje oznake na prvu liniju
+	t1=new TLatex(theta_min-sigma_l+0.05,2.4,"#hat{#theta}-#sigma");
+	t1->SetTextAngle(90);
+	t1->SetTextColor(1);
+	t1->SetTextSize(0.03);
+	t1->Draw();
+	line1->Draw();
+	
+	line2=new TLine(theta_min-sigma_l,least_square->Eval(theta_min)+1,theta_min+sigma_r,least_square->Eval(theta_min)+1);
+	line2->SetLineColor(kBlack);
+	line2->SetLineStyle(kDashed);
+	line2->Draw();
+	
+	line3=new TLine(theta_min+sigma_r,2.1,theta_min+sigma_r,least_square->Eval(theta_min)+1);
+	line3->SetLineColor(kBlack);
+	line3->SetLineStyle(kDashed);
+	//postavljanje oznake na desnu liniju
+	t2=new TLatex(theta_min+sigma_l-0.03,2.4,"#hat{#theta}+#sigma");
+	t2->SetTextAngle(90);
+	t2->SetTextColor(1);
+	t2->SetTextSize(0.03);
+	t2->Draw();
+	line3->Draw();*/
 	
 	TH1F *limit_up_histo,*limit_down_histo;
-	limit_up_histo=new TH1F("Upper limit","Upper limit",input_N,0,input_N);//broj binova,početak, kraj
-	limit_down_histo=new TH1F("CPZone","CPZone",input_N,0,input_N);
+	TLine *line1,*line2,*line3;
+	TLatex *t1,*t2,*t3;
+	limit_up_histo=new TH1F("Upper limit","Upper limit",input_N+1,0,input_N+1);//broj binova je N+1 jer idemo od 0 do input_N,početak, kraj  
+	limit_down_histo=new TH1F("CPZone","CPZone",input_N+1,0,input_N+1);
 	
 	for(int i=0;i<=input_N;i++)//prolazimo kroz sve moguće brojeve realizacija za 10 događaja i punimo histograme
 	{
-		limit_up_histo->SetBinContent(i,upper_limit_cp(i,input_N,C));// ne radi ovako....Fill(upper_limit_cp(i,input_N,C)); google kaže za egzaktne SetBinContent
-		limit_down_histo->SetBinContent(i,lower_limit_cp(i,input_N,C));	
+		
+		a1=upper_limit_cp(i,input_N,C);
+		a2=lower_limit_cp(i,input_N,C);
+		cout<<"Interval za "<<i<<" zeljenih realizacija od 10 dogadaja je \t ["<<a2<<","<<a1<<"]"<<endl;
+		limit_up_histo->SetBinContent(i+1,a1);// ne radi ovako....Fill(upper_limit_cp(i,input_N,C)); google kaže za egzaktne SetBinContent
+		limit_down_histo->SetBinContent(i+1,a2);	
+		//vizualni prikaz za određeni input_r=broj povoljnih događaja
+		if(i==input_r)
+		{
+			line1=new TLine(0,a1,i,a1);
+			t1=new TLatex(0.5*input_r,a1+0.03,"p_{+}(r_{input})");
+			line2=new TLine(0,a2,i,a2);
+			t2=new TLatex(0.5*input_r,a2-0.04,"p_{-}(r_{input})");
+			line3=new TLine(i,-0.1,i,a1);
+			t3=new TLatex(input_r-0.2,-0.1-0.07,"r_{input}");
+		}
 	}
-	limit_down_histo->SetMaximum(1.0);
-	limit_down_histo->SetMinimum(0.0);
-	limit_up_histo->SetMaximum(1.0);
-	limit_up_histo->SetMinimum(0.0); 
-	limit_down_histo->GetXaxis()->SetTitle("N");
+	line1->SetLineColor(kBlack);
+	line1->SetLineStyle(kDashed);
+	t1->SetTextColor(1);
+	t1->SetTextSize(0.03);
+	
+	line2->SetLineColor(kBlack);
+	line2->SetLineStyle(kDashed);
+	t2->SetTextColor(1);
+	t2->SetTextSize(0.03);
+	
+	line3->SetLineColor(kBlack);
+	line3->SetLineStyle(kDashed);
+	t3->SetTextColor(1);
+	t3->SetTextSize(0.03);
+	
+	
+	
+	
+	
+	limit_down_histo->SetMaximum(1.1);
+	limit_down_histo->SetMinimum(-0.1);
+	limit_up_histo->SetMaximum(1.1);
+	limit_up_histo->SetMinimum(-0.1); 
+	limit_down_histo->GetXaxis()->SetTitle("r");
 	limit_down_histo->GetYaxis()->SetTitle("p");
 	limit_down_histo->Draw();
+	line1->Draw();
+	t1->Draw();
+	line2->Draw();
+	t2->Draw();
+	line3->Draw();
+	t3->Draw();
 	limit_up_histo->Draw("same");
 	canvas->SaveAs("CPZone.pdf");
 }
