@@ -115,11 +115,10 @@ void Analyzer::dice_throw(double C)//rima conf. limit ovisno je li jedan ili dva
 {
 	srand((unsigned)time(0));
 	double upper_limit,lower_limit;
-	int pokrivenost=0;
+	int pokrivenost=0,result,counter=0;
 	for(int j=0;j<1000;j++)//željei eksperiment 10 bacanja kockice ponavlja se 1000 puta
 	{
-		int result,counter=0;
-		for(int i=0;i<10;i++)//deset bacanja kockice za svaki j-ti eksperiment
+		for(int i=0;i<=10;i++)//deset bacanja kockice za svaki j-ti eksperiment
 		{
 			result=rand()%6+1;//generira random broj od 1 do 6...rand()%6 daje ostatke pri djeljenju sa 6 (0,1,2,3,4,5) pa zato +1...skripta UTB
 			if(result==6)
@@ -130,10 +129,11 @@ void Analyzer::dice_throw(double C)//rima conf. limit ovisno je li jedan ili dva
 		upper_limit=upper_limit_cp(counter,10,C);//određuje p+ za r=counter okretanja broja 6 u 10 bacanja s vjerojatnošću 1 sigma
 		lower_limit=lower_limit_cp(counter,10,C);
 		//p_true je 1/6...to je prava vjerojatnost za reazizaciju broja broja 6
-		if(upper_limit>=1/6 && lower_limit<=1/6)//1/6 je između p- i p+
+		if(upper_limit>=1.0/6 && lower_limit<=1.0/6)//1/6 je između p- i p+
 		{
 			pokrivenost++;//u koliko od 1000 eksperimenata je 1/6 u conf. intervalu
 		}
+		counter=0;
 	}
 	cout<<pokrivenost<<endl;	
 }
@@ -145,34 +145,6 @@ void Analyzer::Draw_cp_zone(int input_r,int input_N,double C)
 	TCanvas *canvas;
 	gStyle->SetOptStat(0000);
 	canvas= new TCanvas("c1","c1",1600,900);
-	
-	/*
-	line1=new TLine(theta_min-sigma_l,2.1,theta_min-sigma_l,least_square->Eval(theta_min)+1);
-	line1->SetLineColor(kBlack);
-	line1->SetLineStyle(kDashed);
-	//postavljanje oznake na prvu liniju
-	t1=new TLatex(theta_min-sigma_l+0.05,2.4,"#hat{#theta}-#sigma");
-	t1->SetTextAngle(90);
-	t1->SetTextColor(1);
-	t1->SetTextSize(0.03);
-	t1->Draw();
-	line1->Draw();
-	
-	line2=new TLine(theta_min-sigma_l,least_square->Eval(theta_min)+1,theta_min+sigma_r,least_square->Eval(theta_min)+1);
-	line2->SetLineColor(kBlack);
-	line2->SetLineStyle(kDashed);
-	line2->Draw();
-	
-	line3=new TLine(theta_min+sigma_r,2.1,theta_min+sigma_r,least_square->Eval(theta_min)+1);
-	line3->SetLineColor(kBlack);
-	line3->SetLineStyle(kDashed);
-	//postavljanje oznake na desnu liniju
-	t2=new TLatex(theta_min+sigma_l-0.03,2.4,"#hat{#theta}+#sigma");
-	t2->SetTextAngle(90);
-	t2->SetTextColor(1);
-	t2->SetTextSize(0.03);
-	t2->Draw();
-	line3->Draw();*/
 	
 	TH1F *limit_up_histo,*limit_down_histo;
 	TLine *line1,*line2,*line3;
@@ -213,10 +185,6 @@ void Analyzer::Draw_cp_zone(int input_r,int input_N,double C)
 	line3->SetLineStyle(kDashed);
 	t3->SetTextColor(1);
 	t3->SetTextSize(0.03);
-	
-	
-	
-	
 	
 	limit_down_histo->SetMaximum(1.1);
 	limit_down_histo->SetMinimum(-0.1);
