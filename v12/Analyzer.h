@@ -201,7 +201,8 @@ public :
    virtual void     Show(Long64_t entry = -1);
    public :
    TTree *b_tree, *signal_tree;
-   TH1F *Back_histo, *Signal_histo;
+   TLegend *legend;
+   TH1F *Back_histo[8], *Signal_histo[8];
    //TH1F *tr_back_histo, *tr_signal_histo;
    virtual void Plot_histogram();
    virtual void TMVATraining();
@@ -215,8 +216,36 @@ Analyzer::Analyzer(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
 
-	Signal_histo=new TH1F("Signal","Signal",50,70,170);
-	Back_histo=new TH1F("Back","Back",50,70,170);
+	//nisu svi histogrami istog raspona pa ih zato ovako definira
+	
+	Signal_histo[0]=new TH1F("scl_eta","scl_eta",50,-2,3);
+	Back_histo[0]=new TH1F("scl_eta_b","scl_eta_b",50,-2,3);
+	
+	Signal_histo[1]=new TH1F("ele_hadronicOverEm","ele_hadronicOverEm",50,0,0.1);
+	Back_histo[1]=new TH1F("ele_hadronicOverEm_b","ele_hadronicOverEm_b",50,0,0.1);
+	
+	Signal_histo[2]=new TH1F("ele_gsfchi2","ele_gsfchi2",50,0,5);
+	Back_histo[2]=new TH1F("ele_gsfchi2_b","ele_gsfchi2_b",50,0,5);
+	
+	Signal_histo[3]=new TH1F("ele_fbrem","ele_fbrem",25,0,1);
+	Back_histo[3]=new TH1F("ele_fbrem_b","ele_fbrem_b",25,0,1);
+	
+	Signal_histo[4]=new TH1F("ele_ep","ele_ep",50,0,4);
+	Back_histo[4]=new TH1F("ele_ep_b","ele_ep_b",50,0,4);
+	
+	Signal_histo[5]=new TH1F("ele_eelepout","ele_eelepout",50,0,4);
+	Back_histo[5]=new TH1F("ele_eelepout_b","ele_eelepout_b",50,0,4);
+	
+	Signal_histo[6]=new TH1F("ele_pfChargedHadIso","ele_pfChargedHadIso",5,0,0.5);
+	Back_histo[6]=new TH1F("ele_pfChargedHadIso_b","ele_pfChargedHadIso_b",5,0,.5);
+	
+	Signal_histo[7]=new TH1F("ele_pt","ele_pt",50,0,100);
+	Back_histo[7]=new TH1F("ele_pt_b","ele_pt_b",50,0,100);
+
+		
+	legend = new TLegend(0.7,0.7,0.9,0.9);
+
+	
 	if (tree == 0) 
 	{
       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/home/public/data/ElectronTraining/Electrons.root");
