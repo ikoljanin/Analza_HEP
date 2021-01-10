@@ -14,8 +14,5 @@ int main ()
 	//A->TMVATraining("MLP");
 	//A->plot("MLP");
 	
-	
-	
-	
     return 0;
 }

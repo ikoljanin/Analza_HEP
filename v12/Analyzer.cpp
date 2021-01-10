@@ -322,7 +322,7 @@ void Analyzer::TMVATraining(TString myMethodList )
    TMVA::DataLoader *dataloader=new TMVA::DataLoader("dataset");
 	//odabir varijabli
    dataloader->AddVariable( "ele_ep", 'F' );
-   dataloader->AddVariable( "ele_hadronicOverEm", 'F' );
+   dataloader->AddVariable( "ele_pfChargedHadIso", 'F' );
    dataloader->AddVariable( "ele_fbrem", 'F' );
    dataloader->AddVariable( "ele_pt", 'F' );
    Double_t signalWeight     = 1.0;
@@ -342,7 +342,7 @@ void Analyzer::TMVATraining(TString myMethodList )
                            "!H:!V:NTrees=1000:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
 	if (myMethodList=="BDT")  // Adaptive Boost
       factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",
-                           "!H:!V:NTrees=1000:MinNodeSize=10%:MaxDepth=1000:BoostType=AdaBoost:AdaBoostBeta=0.8:UseBaggedBoost:BaggedSampleFraction=0.05:SeparationType=GiniIndex:nCuts=200" );
+                           "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
   
    factory->TrainAllMethods();
 
@@ -381,7 +381,7 @@ void Analyzer :: plot(TString myMethodList)
 		signal->Draw();
 		canvas->cd(2);
 		bkg->Draw();
-		canvas->SaveAs("MLP_result.pdf");
+		canvas->SaveAs("BDTG_result.pdf");
 		canvas1->cd();
 		sig_bkg_eff->Draw();
 	}
@@ -398,7 +398,7 @@ void Analyzer :: plot(TString myMethodList)
 		signal->Draw();
 		canvas->cd(2);
 		bkg->Draw();
-		canvas->SaveAs("MLP_result.pdf");
+		canvas->SaveAs("BDT_result.pdf");
 		canvas1->cd();
 		sig_bkg_eff->Draw();
 	}
