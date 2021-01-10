@@ -205,7 +205,8 @@ public :
    TH1F *Back_histo[8], *Signal_histo[8];
    //TH1F *tr_back_histo, *tr_signal_histo;
    virtual void Plot_histogram();
-   virtual void TMVATraining();
+   virtual void TMVATraining(TString myMethodList);
+   virtual void plot(TString myMethodList);
 };
 
 #endif

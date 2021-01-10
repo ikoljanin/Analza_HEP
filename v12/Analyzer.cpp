@@ -1,4 +1,5 @@
 #define Analyzer_cxx
+#define TMVATraining_cxx
 #include "Analyzer.h"
 #include <TH2.h>
 #include <TStyle.h>
@@ -308,18 +309,8 @@ void Analyzer::Plot_histogram()
 	
 }
 
-void Analyzer::TMVATraining()
+void Analyzer::TMVATraining(TString myMethodList )
 {
-	TTree *tree=new TTree();
-	if (tree == 0) 
-	{
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("TMVA.root");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("TMVA.root");
-      }
-      f->GetObject("background",b_tree);
-	  f->GetObject("signal",signal_tree);
-   }
 	
    TMVA::Tools::Instance();
    // Default MVA methods to be trained + tested
@@ -330,10 +321,10 @@ void Analyzer::TMVATraining()
                                                "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
    TMVA::DataLoader *dataloader=new TMVA::DataLoader("dataset");
 	//odabir varijabli
-   dataloader->AddVariable( "ele_pt", 'F' );
-   dataloader->AddVariable( "scl_eta", 'F' );
+   dataloader->AddVariable( "ele_ep", 'F' );
    dataloader->AddVariable( "ele_hadronicOverEm", 'F' );
-   dataloader->AddVariable( "ele_gsfchi2", 'F' );
+   dataloader->AddVariable( "ele_fbrem", 'F' );
+   dataloader->AddVariable( "ele_pt", 'F' );
    Double_t signalWeight     = 1.0;
    Double_t backgroundWeight = 1.0;
    dataloader->AddSignalTree    ( signal_tree,     signalWeight );
@@ -343,7 +334,16 @@ void Analyzer::TMVATraining()
    dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
                                         "nTrain_Signal=1000:nTrain_Background=1000:SplitMode=Random:NormMode=NumEvents:!V" );
    // Cut optimisation
-      factory->BookMethod( dataloader, TMVA::Types::kMLP, "MLPBNN", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=60:HiddenLayers=N+5:TestRate=5:TrainingMethod=BFGS:UseRegulator" ); // BFGS training with bayesian regulators
+	if (myMethodList=="MLP")
+    factory->BookMethod( dataloader, TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N:TestRate=0.5:!UseRegulator" );
+
+	if (myMethodList=="BDTG") // Gradient Boost
+    factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDTG",
+                           "!H:!V:NTrees=1000:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=1:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
+	if (myMethodList=="BDT")  // Adaptive Boost
+      factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",
+                           "!H:!V:NTrees=1000:MinNodeSize=10%:MaxDepth=1000:BoostType=AdaBoost:AdaBoostBeta=0.8:UseBaggedBoost:BaggedSampleFraction=0.05:SeparationType=GiniIndex:nCuts=200" );
+  
    factory->TrainAllMethods();
 
    factory->TestAllMethods();
@@ -356,6 +356,71 @@ void Analyzer::TMVATraining()
    
    delete factory;
    delete dataloader;
+   
+   
 }
 
+void Analyzer :: plot(TString myMethodList)
+{
+	TCanvas *canvas;
+	TCanvas *canvas1;
+	canvas= new TCanvas("","",1600,900);
+	canvas1= new TCanvas("","",1600,900);
+	canvas->Divide(2,1);
+	TFile *f = new TFile("TMVA.root"); 
+	if(myMethodList=="BDTG")
+	{
+		TGraph* signal = (TGraph*)f->Get("dataset/Method_BDT/BDTG/MVA_BDTG_S");
+		TGraph* bkg = (TGraph*)f->Get("dataset/Method_BDT/BDTG/MVA_BDTG_B");
+		TH1F* sig_bkg_eff = (TH1F*)f->Get("dataset/Method_BDT/BDTG/MVA_BDTG_effBvsS");
+		signal->SetTitle("Signal");
+		bkg->SetTitle("Background");
+		sig_bkg_eff->SetTitle("SIGvsBKG");
+		cout<<"Udio propustenog backgrounda za 90% signala:"<<sig_bkg_eff->Interpolate(0.9)<<endl;
+		canvas->cd(1);
+		signal->Draw();
+		canvas->cd(2);
+		bkg->Draw();
+		canvas->SaveAs("MLP_result.pdf");
+		canvas1->cd();
+		sig_bkg_eff->Draw();
+	}
+	if(myMethodList=="BDT")
+	{
+		TGraph* signal = (TGraph*)f->Get("dataset/Method_BDT/BDT/MVA_BDT_S");
+		TGraph* bkg = (TGraph*)f->Get("dataset/Method_BDT/BDT/MVA_BDT_B");
+		TH1F* sig_bkg_eff = (TH1F*)f->Get("dataset/Method_BDT/BDT/MVA_BDT_effBvsS");
+		signal->SetTitle("Signal");
+		bkg->SetTitle("Background");
+		sig_bkg_eff->SetTitle("SIGvsBKG");
+		cout<<"Udio propustenog backgrounda za 90% signala:"<<sig_bkg_eff->Interpolate(0.9)<<endl;
+		canvas->cd(1);
+		signal->Draw();
+		canvas->cd(2);
+		bkg->Draw();
+		canvas->SaveAs("MLP_result.pdf");
+		canvas1->cd();
+		sig_bkg_eff->Draw();
+	}
+	if(myMethodList=="MLP")
+	{
+		TGraph* signal = (TGraph*)f->Get("dataset/Method_MLP/MLP/MVA_MLP_S");
+		TGraph* bkg = (TGraph*)f->Get("dataset/Method_MLP/MLP/MVA_MLP_B");
+		TH1F* sig_bkg_eff = (TH1F*)f->Get("dataset/Method_MLP/MLP/MVA_MLP_effBvsS");
+		signal->SetTitle("Signal");
+		bkg->SetTitle("Background");
+		sig_bkg_eff->SetTitle("SIGvsBKG");
+		cout<<"Udio propustenog backgrounda za 90% signala:"<<sig_bkg_eff->Interpolate(0.9)<<endl;
+		canvas->cd(1);
+		signal->Draw();
+		canvas->cd(2);
+		bkg->Draw();
+		canvas->SaveAs("MLP_result.pdf");
+		canvas1->cd();
+		sig_bkg_eff->Draw();
+	}	
+	canvas1->SaveAs("SIG_vs_BKG.pdf");
+	 
+}
 
+ 
