@@ -67,10 +67,8 @@ public :
 #ifdef Analyzer_cxx
 Analyzer::Analyzer(TTree *tree) : fChain(0) 
 {
-	chi_square_histo=new TH1F("h","h",10000,0,10000);
-	fit=new TF1("fit","[0]*exp(-x/[1])",0,700);
-	fit->SetParameter(0,500);
-	fit->FixParameter(1,100);
+	chi_square_histo=new TH1F("h","h",200,0,50);
+	
    if (tree == 0) 
    {
       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/home/public/data/Height/Height.root");

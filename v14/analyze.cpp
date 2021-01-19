@@ -4,7 +4,7 @@ int main ()
 {
     Analyzer *A;
 	A=new Analyzer();
-	//A->Loop();
+	A->Loop();
 	A->p_value_scan();
 	//A->Test();
     return 0;
